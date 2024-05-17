@@ -1,8 +1,8 @@
 package config
 
 func (cfg *Config) LoadDefaults() {
-	cfg.Host = "localhost"
-	cfg.EndPoint = "/api"
-	cfg.Authorization = ""
-	cfg.Ssl = false
+	cfg.Api.Host = "localhost"
+	cfg.Api.EndPoint = "/api"
+	cfg.Api.Authorization = ""
+	cfg.Api.Ssl = false
 }
