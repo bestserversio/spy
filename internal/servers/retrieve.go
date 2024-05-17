@@ -23,11 +23,11 @@ func RetrieveServers(cfg config.Config) ([]Server, error) {
 
 	// Create new client with specific timeout.
 	client := http.Client{
-		Timeout: time.Duration(cfg.Timeout) * time.Second,
+		Timeout: time.Duration(cfg.Api.Timeout) * time.Second,
 	}
 
 	// Format URL.
-	url := fmt.Sprintf("%s%s", cfg.Host, cfg.EndPoint)
+	url := fmt.Sprintf("%s%s", cfg.Api.Host, "/api/servers/get")
 
 	// Create a new request and check for error.
 	req, err := http.NewRequest("GET", url, nil)
@@ -37,7 +37,7 @@ func RetrieveServers(cfg config.Config) ([]Server, error) {
 	}
 
 	// Set authorization header token.
-	req.Header.Add("Authorization", cfg.Authorization)
+	req.Header.Add("Authorization", cfg.Api.Authorization)
 
 	// Set content type to JSON.
 	req.Header.Add("Content-Type", "application/json")

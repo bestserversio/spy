@@ -42,11 +42,11 @@ func UpdateServers(cfg config.Config, servers []ServersWithWhere) (int, error) {
 	cnt := 0
 
 	// Format URL.
-	url := fmt.Sprintf("%s%s", cfg.Host, cfg.EndPoint)
+	url := fmt.Sprintf("%s%s", cfg.Api.Host, "/api/servers/update")
 
 	// Create new HTTP client.
 	client := http.Client{
-		Timeout: time.Duration(cfg.Timeout) * time.Second,
+		Timeout: time.Duration(cfg.Api.Timeout) * time.Second,
 	}
 
 	// Create request body.
@@ -69,7 +69,7 @@ func UpdateServers(cfg config.Config, servers []ServersWithWhere) (int, error) {
 	}
 
 	// Set authorization header.
-	req.Header.Add("Authorization", cfg.Authorization)
+	req.Header.Add("Authorization", cfg.Api.Authorization)
 
 	// Set content type to JSON.
 	req.Header.Add("Content-Type", "application/json")
