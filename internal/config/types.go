@@ -2,12 +2,12 @@ package config
 
 type VMS struct {
 	Enabled  bool   `json:"enabled"`
+	Timeout  int    `json:"timeout"`
 	ApiToken string `json:"api_token"`
 }
 
 type API struct {
 	Host          string `json:"host"`
-	EndPoint      string `json:"endpoint"`
 	Authorization string `json:"authorization"`
 	Ssl           bool   `json:"ssl"`
 	Timeout       uint   `json:"timeout"`

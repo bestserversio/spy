@@ -8,8 +8,7 @@ import (
 func (cfg *Config) PrintConfig() {
 	fmt.Println("Config Settings")
 
-	fmt.Println("\tHost => " + cfg.Host)
-	fmt.Println("\tEndPoint => " + cfg.EndPoint)
-	fmt.Println("\tAuthorization => " + cfg.Authorization)
-	fmt.Println("\tSSL => " + strconv.FormatBool(cfg.Ssl))
+	fmt.Println("\tHost => " + cfg.Api.Host)
+	fmt.Println("\tAuthorization => " + cfg.Api.Authorization)
+	fmt.Println("\tSSL => " + strconv.FormatBool(cfg.Api.Ssl))
 }
