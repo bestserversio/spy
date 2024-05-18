@@ -1,36 +1,36 @@
 package servers
 
 type Server struct {
-	Id      int    `json:"id"`
-	Visible bool   `json:"visible"`
-	Url     string `json:"url"`
+	Id      *int    `json:"id,omitempty"`
+	Visible *bool   `json:"visible,omitempty"`
+	Url     *string `json:"url,omitempty"`
 
-	Ip       string `json:"ip"`
-	Ip6      string `json:"ip6"`
-	Port     int    `json:"port"`
-	HostName string `json:"hostName"`
+	Ip       *string `json:"ip,omitempty"`
+	Ip6      *string `json:"ip6,omitempty"`
+	Port     *int    `json:"port,omitempty"`
+	HostName *string `json:"hostName,omitempty"`
 
-	PlatformId int `json:"platformId"`
-	CategoryId int `json:"categoryId"`
+	PlatformId *int `json:"platformId,omitempty"`
+	CategoryId *int `json:"categoryId,omitempty"`
 
-	Name             string `json:"name"`
-	DescriptionShort string `json:"descriptionShort"`
-	Description      string `json:"description"`
-	Features         string `json:"features"`
-	Rules            string `json:"rules"`
+	Name             *string `json:"name,omitempty"`
+	DescriptionShort *string `json:"descriptionShort,omitempty"`
+	Description      *string `json:"description,omitempty"`
+	Features         *string `json:"features,omitempty"`
+	Rules            *string `json:"rules,omitempty"`
 
-	Online   bool   `json:"online"`
-	CurUsers int    `json:"curUsers"`
-	MaxUsers int    `json:"maxUsers"`
-	Bots     int    `json:"bots"`
-	MapName  string `json:"mapName"`
-	AvgUsers int    `json:"avgUsers"`
+	Online   *bool   `json:"online,omitempty"`
+	CurUsers *int    `json:"curUsers,omitempty"`
+	MaxUsers *int    `json:"maxUsers,omitempty"`
+	Bots     *int    `json:"bots,omitempty"`
+	MapName  *string `json:"mapName,omitempty"`
+	AvgUsers *int    `json:"avgUsers,omitempty"`
 
-	Region      string  `json:"region"`
-	LocationLat float64 `json:"locationLat"`
-	LocationLon float64 `json:"locationLon"`
+	Region      *string  `json:"region,omitempty"`
+	LocationLat *float64 `json:"locationLat,omitempty"`
+	LocationLon *float64 `json:"locationLon,omitempty"`
 
-	LastQueried string `json:"lastQueried"`
+	LastQueried *string `json:"lastQueried,omitempty"`
 }
 
 type ServerClaimKey struct {
