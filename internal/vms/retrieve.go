@@ -8,12 +8,11 @@ import (
 	"time"
 
 	"github.com/bestserversio/spy/internal/config"
-	"github.com/bestserversio/spy/internal/utils"
 )
 
 const STEAM_API_URL = "https://api.steampowered.com/IGameServersService/GetServerList/v1/"
 
-func RetrieveServers(cfg config.Config, appId int) ([]Server, error) {
+func RetrieveServers(cfg *config.Config, appId int) ([]Server, error) {
 	var servers []Server
 	var err error = nil
 
@@ -60,9 +59,6 @@ func RetrieveServers(cfg config.Config, appId int) ([]Server, error) {
 	err = json.Unmarshal(b, &retrieveResp)
 
 	servers = retrieveResp.Response.Servers
-
-	// Some debug.
-	utils.DebugMsg(2, cfg.Verbose, "[VMS] Retrieved %d servers from app ID %d.", len(servers), appId)
 
 	return servers, err
 }
