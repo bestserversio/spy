@@ -19,12 +19,16 @@ type Server struct {
 	Features         *string `json:"features,omitempty"`
 	Rules            *string `json:"rules,omitempty"`
 
-	Online   *bool   `json:"online,omitempty"`
-	CurUsers *int    `json:"curUsers,omitempty"`
-	MaxUsers *int    `json:"maxUsers,omitempty"`
-	Bots     *int    `json:"bots,omitempty"`
-	MapName  *string `json:"mapName,omitempty"`
-	AvgUsers *int    `json:"avgUsers,omitempty"`
+	Online    *bool   `json:"online,omitempty"`
+	CurUsers  *int    `json:"curUsers,omitempty"`
+	MaxUsers  *int    `json:"maxUsers,omitempty"`
+	Bots      *int    `json:"bots,omitempty"`
+	MapName   *string `json:"mapName,omitempty"`
+	Password  *bool   `json:"password,omitempty"`
+	Os        *string `json:"os,omitempty"`
+	Secure    *bool   `json:"secure,omitempty"`
+	Dedicated *bool   `json:"dedicated,omitempty"`
+	AvgUsers  *int    `json:"avgUsers,omitempty"`
 
 	Region      *string  `json:"region,omitempty"`
 	LocationLat *float64 `json:"locationLat,omitempty"`
