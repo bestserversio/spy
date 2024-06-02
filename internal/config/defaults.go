@@ -9,7 +9,4 @@ func (cfg *Config) LoadDefaults() {
 	cfg.Vms.Enabled = false
 	cfg.Vms.Interval = 120
 	cfg.Vms.Timeout = 5
-
-	cfg.Scanner.MinWait = 10
-	cfg.Scanner.MaxWait = 15
 }

@@ -16,8 +16,10 @@ type VMS struct {
 }
 
 type Scanner struct {
-	MinWait int `json:"min_wait"`
-	MaxWait int `json:"max_wait"`
+	Protocol string `json:"protocol"`
+	AppIds   []int  `json:"app_ids"`
+	MinWait  int    `json:"min_wait"`
+	MaxWait  int    `json:"max_wait"`
 }
 
 type PlatformMapper struct {
@@ -30,6 +32,6 @@ type Config struct {
 
 	Api          API              `json:"api"`
 	Vms          VMS              `json:"vms"`
-	Scanner      Scanner          `json:"scanner"`
+	Scanners     []Scanner        `json:"scanners"`
 	PlatformMaps []PlatformMapper `json:"platform_maps"`
 }

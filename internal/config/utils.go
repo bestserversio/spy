@@ -30,9 +30,28 @@ func (cfg *Config) PrintConfig() {
 
 	fmt.Println("\t\tApp IDs => " + strings.Join(appIdList, ", "))
 
-	fmt.Println("\tScanner")
-	fmt.Println("\t\tMin Wait => " + strconv.Itoa(cfg.Scanner.MinWait))
-	fmt.Println("\t\tMax Wait => " + strconv.Itoa(cfg.Scanner.MaxWait))
+	fmt.Println("\tScanners")
+	for i, s := range cfg.Scanners {
+		fmt.Println("\t\tScanner #" + strconv.Itoa(i+1))
+
+		fmt.Println("\t\t\tProtocol => " + s.Protocol)
+		fmt.Println("\t\t\tMin Wait => " + strconv.Itoa(s.MinWait))
+		fmt.Println("\t\t\tMax Wait => " + strconv.Itoa(s.MaxWait))
+
+		ids := "None"
+
+		if len(s.AppIds) > 0 {
+			var ids_s []string
+
+			for _, a := range s.AppIds {
+				ids_s = append(ids_s, strconv.Itoa(a))
+			}
+
+			ids = strings.Join(ids_s, ", ")
+		}
+
+		fmt.Println("\t\t\tApp IDs => " + ids)
+	}
 
 	fmt.Println("\tPlatform Mappings (App ID => Platform ID)")
 	for _, v := range cfg.PlatformMaps {
