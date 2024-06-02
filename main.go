@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/bestserversio/spy/internal/config"
+	"github.com/bestserversio/spy/internal/scanners"
 	"github.com/bestserversio/spy/internal/servers"
 	"github.com/bestserversio/spy/internal/utils"
 	"github.com/bestserversio/spy/internal/vms"
@@ -109,6 +110,85 @@ func DoVms(cfg *config.Config) {
 	utils.DebugMsg(2, cfg.Verbose, "[VMS] Added/Updated %d servers!", cnt)
 }
 
+func ScannerRespin(scanner *config.Scanner) {
+	min := scanner.MinWait
+	max := scanner.MaxWait
+
+	wait := rand.Intn(max-min+1) + min
+
+	time.Sleep(time.Second * time.Duration(wait))
+}
+
+func HandleScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
+	// Defaults to A2S
+	query_type := 0
+
+	utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Starting scanner with protocol '%s'!", idx, scanner.Protocol)
+
+	for {
+		// Reseed.
+		rand.Seed(time.Now().UnixNano())
+
+		// We need to pick a random app ID.
+		rand_num := rand.Intn(len(scanner.AppIds))
+
+		app_id := scanner.AppIds[rand_num]
+
+		// Retrieve servers from API.
+		allServers, err := servers.RetrieveServers(cfg, &app_id)
+
+		if err != nil {
+			utils.DebugMsg(1, cfg.Verbose, "[SCANNER] Failed to retrieve servers using app ID '%d' due to error.", app_id)
+			utils.DebugMsg(1, cfg.Verbose, err.Error())
+
+			ScannerRespin(scanner)
+		}
+
+		utils.DebugMsg(4, cfg.Verbose, "[SCANNER] Found %d to update from API for app ID '%d'!", len(allServers), app_id)
+
+		// Loop through each server and update.
+		for i := 0; i < len(allServers); i++ {
+			srv := &allServers[i]
+
+			switch query_type {
+			case 0:
+				if srv.Ip == nil || srv.Port == nil {
+					utils.DebugMsg(1, cfg.Verbose, "[SCANNER] Missing IP/port for server. Skipping.")
+
+					continue
+				}
+
+				// Try querying server with A2S and check for error..
+				err = scanners.QueryA2s(srv)
+
+				if err != nil {
+					utils.DebugMsg(1, cfg.Verbose, "[SCANNER] Failed to query A2S server '%s:%d' due to error.", *srv.Ip, *srv.Port)
+					utils.DebugMsg(1, cfg.Verbose, err.Error())
+				} else {
+					// Set maxplayers to 0 to indicate offline.
+					if srv.MaxUsers == nil {
+						srv.MaxUsers = new(int)
+					}
+
+					*srv.MaxUsers = 0
+				}
+			}
+		}
+
+		// Update servers.
+		cnt, err := servers.AddServers(cfg, allServers, false)
+
+		if err != nil {
+			utils.DebugMsg(1, cfg.Verbose, "[SCANNER] Failed to update servers for app ID '"+strconv.Itoa(app_id)+"' due to error.")
+			utils.DebugMsg(1, cfg.Verbose, err.Error())
+		} else {
+			utils.DebugMsg(3, cfg.Verbose, "[SCANNER] Updated "+strconv.Itoa(cnt)+" servers for app ID '"+strconv.Itoa(app_id)+"'!")
+		}
+
+		ScannerRespin(scanner)
+	}
+}
+
 func main() {
 	// Command line options and parse command line.
 	var list bool
@@ -182,6 +262,11 @@ func main() {
 			}
 		}
 	}()
+
+	// Create scanners.
+	for i, s := range cfg.Scanners {
+		go HandleScanner(&cfg, &s, i)
+	}
 
 	// Make a signal.
 	sigc := make(chan os.Signal, 1)
