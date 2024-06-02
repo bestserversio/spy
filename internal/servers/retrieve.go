@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
+	"strconv"
 	"time"
 
 	"github.com/bestserversio/spy/internal/config"
@@ -16,7 +18,7 @@ type RetrieveResp struct {
 	Message string   `json:"message"`
 }
 
-func RetrieveServers(cfg config.Config) ([]Server, error) {
+func RetrieveServers(cfg *config.Config, platform_id *int) ([]Server, error) {
 	// Initiailize what we're returning.
 	servers := []Server{}
 	var err error
@@ -26,8 +28,19 @@ func RetrieveServers(cfg config.Config) ([]Server, error) {
 		Timeout: time.Duration(cfg.Api.Timeout) * time.Second,
 	}
 
+	// Create query parameters.
+	params := url.Values{}
+
+	if platform_id != nil {
+		params.Add("platformId", strconv.Itoa(*platform_id))
+	}
+
 	// Format URL.
 	url := fmt.Sprintf("%s%s", cfg.Api.Host, "/api/servers/get")
+
+	if len(params) > 0 {
+		url = fmt.Sprintf("%s?%s", url, params.Encode())
+	}
 
 	// Create a new request and check for error.
 	req, err := http.NewRequest("GET", url, nil)
