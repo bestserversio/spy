@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/bestserversio/spy/internal/config"
+	"github.com/bestserversio/spy/internal/utils"
 )
 
 type RetrieveResp struct {
@@ -18,7 +19,7 @@ type RetrieveResp struct {
 	Message string   `json:"message"`
 }
 
-func RetrieveServers(cfg *config.Config, platform_id *int) ([]Server, error) {
+func RetrieveServers(cfg *config.Config, platform_id *int, limit *int) ([]Server, error) {
 	// Initiailize what we're returning.
 	servers := []Server{}
 	var err error
@@ -35,12 +36,18 @@ func RetrieveServers(cfg *config.Config, platform_id *int) ([]Server, error) {
 		params.Add("platformId", strconv.Itoa(*platform_id))
 	}
 
+	if limit != nil {
+		params.Add("limit", strconv.Itoa(*limit))
+	}
+
 	// Format URL.
 	url := fmt.Sprintf("%s%s", cfg.Api.Host, "/api/servers/get")
 
 	if len(params) > 0 {
 		url = fmt.Sprintf("%s?%s", url, params.Encode())
 	}
+
+	utils.DebugMsg(4, cfg.Verbose, "[SERVERS] Sending API request to => '%s'.", url)
 
 	// Create a new request and check for error.
 	req, err := http.NewRequest("GET", url, nil)
