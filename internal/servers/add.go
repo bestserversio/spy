@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/bestserversio/spy/internal/config"
@@ -42,14 +43,20 @@ func AddServers(cfg *config.Config, servers []Server, addOnly bool) (int, error)
 	var err error
 	cnt := 0
 
-	params := ""
+	params := url.Values{}
 
 	if addOnly {
-		params = "?addonly=1"
+		params.Add("addonly", "1")
 	}
 
 	// Format URL.
-	url := fmt.Sprintf("%s%s%s", cfg.Api.Host, "/api/servers/add", params)
+	url := fmt.Sprintf("%s%s", cfg.Api.Host, "/api/servers/add")
+
+	if len(params) > 0 {
+		url = fmt.Sprintf("%s?%s", url, params.Encode())
+	}
+
+	utils.DebugMsg(4, cfg.Verbose, "[SRV_AS] Using API url '%s'.", url)
 
 	// Create new HTTP client.
 	client := http.Client{
@@ -117,31 +124,6 @@ func AddServers(cfg *config.Config, servers []Server, addOnly bool) (int, error)
 
 	// Set count to server count.
 	cnt = upResp.ServerCount
-
-	// Verbose.
-	if cfg.Verbose > 0 {
-		// Print every server.
-		if cfg.Verbose > 2 {
-			for i, srv := range upResp.Servers {
-				fmt.Printf("[3][%d] Updating server %s:%d (%s). URL => %s. Platform ID => %d.\n", i, *srv.Ip, *srv.Port, *srv.Ip6, *srv.Url, *srv.PlatformId)
-			}
-		}
-
-		// Print generic details on response.
-		if cfg.Verbose > 1 {
-			fmt.Println("[2][PUT] Found", upResp.ServerCount, "servers!")
-			fmt.Println("[2][PUT] Message =>", upResp.Message)
-		}
-
-		// If we have errors, display them.
-		if upResp.ErrorCount > 0 {
-			fmt.Println("[1][PUT] Found", upResp.ErrorCount, "errors. Listing...")
-
-			for i, msg := range upResp.Errors {
-				fmt.Printf("[1][Err %d] %s\n", i, msg)
-			}
-		}
-	}
 
 	return cnt, err
 }
