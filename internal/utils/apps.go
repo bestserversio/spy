@@ -8,6 +8,8 @@ func AppIdToPlatformId(cfg *config.Config, app_id int) int {
 	for _, t := range cfg.PlatformMaps {
 		if t.AppId == app_id {
 			ret = t.PlatformId
+
+			break
 		}
 	}
 
