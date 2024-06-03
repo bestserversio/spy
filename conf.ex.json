@@ -1,0 +1,16 @@
+{
+    "api": {
+        "host": "http://localhost",
+        "authorization": "test",
+        "timeout": 10
+    },
+    "vms": {
+        "enabled": true,
+        "api_token": "abcdefghijklmnopqrstuvwxyz",
+        "min_wait": 120,
+        "max_wait": 180,
+        "timeout": 5,
+        "app_ids": [440, 240, 730],
+        "recv_only": false
+    }
+}
