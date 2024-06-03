@@ -3,16 +3,17 @@ package config
 type API struct {
 	Host          string `json:"host"`
 	Authorization string `json:"authorization"`
-	Ssl           bool   `json:"ssl"`
 	Timeout       int    `json:"timeout"`
 }
 
 type VMS struct {
 	Enabled  bool   `json:"enabled"`
-	Interval int    `json:"interval"`
 	Timeout  int    `json:"timeout"`
 	ApiToken string `json:"api_token"`
 	AppIds   []int  `json:"app_ids"`
+	RecvOnly bool   `json:"recv_only"`
+	MinWait  int    `json:"min_wait"`
+	MaxWait  int    `json:"max_wait"`
 }
 
 type Scanner struct {
@@ -20,11 +21,13 @@ type Scanner struct {
 	AppIds   []int  `json:"app_ids"`
 	MinWait  int    `json:"min_wait"`
 	MaxWait  int    `json:"max_wait"`
+	Limit    int    `json:"limit"`
+	RecvOnly bool   `json:"recv_only"`
 }
 
 type PlatformMapper struct {
-	AppId      int `json:"appid"`
-	PlatformId int `json:"platformid"`
+	AppId      int `json:"app_id"`
+	PlatformId int `json:"platform_id"`
 }
 
 type Config struct {
