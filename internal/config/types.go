@@ -17,12 +17,12 @@ type VMS struct {
 }
 
 type Scanner struct {
-	Protocol string `json:"protocol"`
-	AppIds   []int  `json:"app_ids"`
-	MinWait  int    `json:"min_wait"`
-	MaxWait  int    `json:"max_wait"`
-	Limit    int    `json:"limit"`
-	RecvOnly bool   `json:"recv_only"`
+	Protocol    string `json:"protocol"`
+	PlatformIds []int  `json:"platform_ids"`
+	MinWait     int    `json:"min_wait"`
+	MaxWait     int    `json:"max_wait"`
+	Limit       int    `json:"limit"`
+	RecvOnly    bool   `json:"recv_only"`
 }
 
 type PlatformMapper struct {

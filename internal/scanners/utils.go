@@ -24,26 +24,29 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 		rand.Seed(time.Now().UnixNano())
 
 		// We need to pick a random app ID.
-		rand_num := rand.Intn(len(scanner.AppIds))
+		rand_num := rand.Intn(len(scanner.PlatformIds))
 
-		app_id := scanner.AppIds[rand_num]
+		platform_id := scanner.PlatformIds[rand_num]
+
+		utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Using platform ID %d.", idx, platform_id)
 
 		// Retrieve servers from API.
-		allServers, err := servers.RetrieveServers(cfg, &app_id, &scanner.Limit)
+		allServers, err := servers.RetrieveServers(cfg, &platform_id, &scanner.Limit)
 
 		if err != nil {
-			utils.DebugMsg(1, cfg.Verbose, "[SCANNER] Failed to retrieve servers using app ID '%d' due to error.", app_id)
+			utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Failed to retrieve servers using platform ID '%d' due to error.", idx, platform_id)
 			utils.DebugMsg(1, cfg.Verbose, err.Error())
 
 			Respin(scanner)
 		}
 
-		utils.DebugMsg(4, cfg.Verbose, "[SCANNER] Found %d servers to update from API for app ID '%d'!", len(allServers), app_id)
+		utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Found %d servers to update from API for platform ID '%d'!", idx, len(allServers), platform_id)
 
 		// Loop through each server and update.
 		for i := 0; i < len(allServers); i++ {
 			srv := &allServers[i]
 
+			// Allocate online if needed.
 			if srv.Online == nil {
 				srv.Online = new(bool)
 			}
@@ -54,6 +57,9 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 			}
 
 			*srv.Where.Id = *srv.Id
+
+			// Make original ID nil.
+			srv.Id = nil
 
 			// Update last queried to now.
 			if srv.LastQueried == nil {
@@ -68,7 +74,7 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 			switch query_type {
 			case 0:
 				if srv.Ip == nil || srv.Port == nil {
-					utils.DebugMsg(1, cfg.Verbose, "[SCANNER] Missing IP/port for server. Skipping.")
+					utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Missing IP/port for server. Skipping.", idx)
 
 					continue
 				}
@@ -77,8 +83,8 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 				err = QueryA2s(srv)
 
 				if err != nil {
-					utils.DebugMsg(3, cfg.Verbose, "[SCANNER] Failed to query A2S server '%s:%d' due to error.", *srv.Ip, *srv.Port)
-					utils.DebugMsg(3, cfg.Verbose, err.Error())
+					utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Failed to query A2S server '%s:%d' due to error.", idx, *srv.Ip, *srv.Port)
+					utils.DebugMsg(4, cfg.Verbose, err.Error())
 
 					if srv.MaxUsers == nil {
 						srv.MaxUsers = new(int)
@@ -90,7 +96,7 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 				}
 			}
 
-			utils.DebugMsg(4, cfg.Verbose, "[SCANNER] Updating server '%s:%d' for app ID '%d'. Players => %d. Max players => %d. Map => %s.", *srv.Ip, *srv.Port, app_id, *srv.CurUsers, *srv.MaxUsers, *srv.MapName)
+			utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Updating server '%s:%d' for platform ID '%d'. Players => %d. Max players => %d. Map => %s.", idx, *srv.Ip, *srv.Port, platform_id, *srv.CurUsers, *srv.MaxUsers, *srv.MapName)
 		}
 
 		if !scanner.RecvOnly {
@@ -98,10 +104,10 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 			cnt, err := servers.AddServers(cfg, allServers, false)
 
 			if err != nil {
-				utils.DebugMsg(1, cfg.Verbose, "[SCANNER] Failed to update servers for app ID '%d' due to error.", app_id)
+				utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Failed to update servers for platform ID '%d' due to error.", idx, platform_id)
 				utils.DebugMsg(1, cfg.Verbose, err.Error())
 			} else {
-				utils.DebugMsg(3, cfg.Verbose, "[SCANNER] Updated %d servers in database for app ID '%d'!", cnt, app_id)
+				utils.DebugMsg(3, cfg.Verbose, "[SCANNER %d] Updated %d servers in database for platform ID '%d'!", idx, cnt, platform_id)
 			}
 		}
 

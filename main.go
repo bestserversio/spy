@@ -83,7 +83,7 @@ func main() {
 
 	// Create scanners.
 	for i, s := range cfg.Scanners {
-		go scanners.DoScanner(&cfg, &s, i)
+		go scanners.DoScanner(&cfg, &s, i+1)
 	}
 
 	// Make a signal.

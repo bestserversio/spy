@@ -42,17 +42,17 @@ func (cfg *Config) PrintConfig() {
 
 			ids := "None"
 
-			if len(s.AppIds) > 0 {
+			if len(s.PlatformIds) > 0 {
 				var ids_s []string
 
-				for _, a := range s.AppIds {
+				for _, a := range s.PlatformIds {
 					ids_s = append(ids_s, strconv.Itoa(a))
 				}
 
 				ids = strings.Join(ids_s, ", ")
 			}
 
-			fmt.Println("\t\t\tApp IDs => " + ids)
+			fmt.Println("\t\t\tPlatform IDs => " + ids)
 		}
 	}
 

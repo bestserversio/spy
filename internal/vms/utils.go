@@ -16,8 +16,12 @@ func Respin(cfg *config.Config) {
 }
 
 func DoVms(cfg *config.Config) {
+	utils.DebugMsg(1, cfg.Verbose, "[VMS] Starting....")
+
 	for {
 		if !cfg.Vms.Enabled {
+			utils.DebugMsg(5, cfg.Verbose, "[VMS] Found VMS disabled. Aborting DoVms().")
+
 			Respin(cfg)
 
 			continue
@@ -116,11 +120,11 @@ func DoVms(cfg *config.Config) {
 			// Append to servers to update array.
 			serversToUpdate = append(serversToUpdate, newSrv)
 
-			utils.DebugMsg(4, cfg.Verbose, "[VMS] Adding server '%s:%d'. Host Name => '%s'. Players => %d. Max Players => %d. Map Name => %s", *newSrv.Ip, *newSrv.Port, *newSrv.HostName, *newSrv.CurUsers, *newSrv.MaxUsers, *newSrv.MapName)
+			utils.DebugMsg(4, cfg.Verbose, "[VMS] Found and adding/updating server '%s:%d'. Host Name => '%s'. Players => %d. Max Players => %d. Map Name => '%s'.", *newSrv.Ip, *newSrv.Port, *newSrv.HostName, *newSrv.CurUsers, *newSrv.MaxUsers, *newSrv.MapName)
 		}
 
 		if len(serversToUpdate) < 1 {
-			utils.DebugMsg(3, cfg.Verbose, "[VMS] Found no servers for app ID %d.", appId)
+			utils.DebugMsg(3, cfg.Verbose, "[VMS] Found no servers to update for app ID %d.", appId)
 
 			Respin(cfg)
 
