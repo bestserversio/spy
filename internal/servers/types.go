@@ -1,6 +1,16 @@
 package servers
 
+type ServerWhere struct {
+	Id   *int    `json:"id,omitempty"`
+	Ip   *string `json:"ip,omitempty"`
+	Ip6  *string `json:"ip6,omitempty"`
+	Port *int    `json:"port,omitempty"`
+	Url  *string `json:"url,omitempty"`
+}
+
 type Server struct {
+	Where ServerWhere `json:"where"`
+
 	Id      *int    `json:"id,omitempty"`
 	Visible *bool   `json:"visible,omitempty"`
 	Url     *string `json:"url,omitempty"`
