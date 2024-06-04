@@ -42,6 +42,11 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 
 		utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Found %d servers to update from API for platform ID '%d'!", idx, len(allServers), platform_id)
 
+		// Make sure we have servers.
+		if len(allServers) < 1 {
+			Respin(scanner)
+		}
+
 		// Loop through each server and update.
 		for i := 0; i < len(allServers); i++ {
 			srv := &allServers[i]
