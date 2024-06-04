@@ -91,12 +91,6 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 					utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Failed to query A2S server '%s:%d' due to error.", idx, *srv.Ip, *srv.Port)
 					utils.DebugMsg(4, cfg.Verbose, err.Error())
 
-					if srv.MaxUsers == nil {
-						srv.MaxUsers = new(int)
-					}
-
-					*srv.MaxUsers = 0
-
 					*srv.Online = false
 				}
 			}
