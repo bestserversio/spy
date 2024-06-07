@@ -112,5 +112,14 @@ func QueryA2s(server *servers.Server) error {
 		*server.Password = false
 	}
 
+	// Lastly, do A2S_PLAYER check.
+	ply, err := cl.QueryPlayer()
+
+	// Make sure count matches online player count.
+	if ply.Count != info.Players {
+		// Set to offline since it's invalid.
+		*server.Online = false
+	}
+
 	return err
 }
