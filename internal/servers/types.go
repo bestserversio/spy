@@ -24,6 +24,7 @@ type Server struct {
 	CategoryId *int `json:"categoryId,omitempty"`
 
 	Name             *string `json:"name,omitempty"`
+	AutoName         *bool   `json:"autoName,omitempty"`
 	DescriptionShort *string `json:"descriptionShort,omitempty"`
 	Description      *string `json:"description,omitempty"`
 	Features         *string `json:"features,omitempty"`
