@@ -64,4 +64,28 @@ func (cfg *Config) PrintConfig() {
 		}
 	}
 
+	if len(cfg.BadNames) > 0 {
+		fmt.Println("\tBad Names")
+
+		for _, s := range cfg.BadNames {
+			fmt.Println("\t\t- ", s)
+		}
+	}
+
+	if len(cfg.BadIps) > 0 {
+		fmt.Println("\tBad IPs")
+
+		for _, s := range cfg.BadIps {
+			fmt.Println("\t\t- ", s)
+		}
+	}
+
+	if len(cfg.BadAsns) > 0 {
+		fmt.Println("\tBad ASNs")
+
+		for _, s := range cfg.BadAsns {
+			fmt.Println("\t\t- ", s)
+		}
+	}
+
 }

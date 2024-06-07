@@ -37,4 +37,7 @@ type Config struct {
 	Vms          VMS              `json:"vms"`
 	Scanners     []Scanner        `json:"scanners"`
 	PlatformMaps []PlatformMapper `json:"platform_maps"`
+	BadNames     []string         `json:"bad_names"`
+	BadIps       []string         `json:"bad_ips"`
+	BadAsns      []uint           `json:"bad_asns"`
 }

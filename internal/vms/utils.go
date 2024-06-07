@@ -117,6 +117,22 @@ func DoVms(cfg *config.Config) {
 			*newSrv.Where.Ip = *newSrv.Ip
 			*newSrv.Where.Port = *newSrv.Port
 
+			// Before adding, do filter check.
+			filtered, err := newSrv.FilterServer(cfg)
+
+			if err != nil {
+				utils.DebugMsg(1, cfg.Verbose, "[VMS] Failed to filter server '%s:%d' due to error.", *newSrv.Ip, *newSrv.Port)
+				utils.DebugMsg(1, cfg.Verbose, err.Error())
+
+				continue
+			}
+
+			if filtered {
+				utils.DebugMsg(3, cfg.Verbose, "[VMS] Skipping '%s:%d' due to being filtered.", *newSrv.Ip, *newSrv.Port)
+
+				continue
+			}
+
 			// Append to servers to update array.
 			serversToUpdate = append(serversToUpdate, newSrv)
 
