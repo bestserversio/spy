@@ -59,6 +59,7 @@ func DoVms(cfg *config.Config) {
 		for _, srv := range allServers {
 			// Create new servers object from servers package and assign basic values.
 			newSrv := servers.Server{
+				Visible:     new(bool),
 				Online:      new(bool),
 				Name:        new(string),
 				CurUsers:    new(int),
@@ -121,16 +122,16 @@ func DoVms(cfg *config.Config) {
 			filtered, err := newSrv.FilterServer(cfg)
 
 			if err != nil {
-				utils.DebugMsg(1, cfg.Verbose, "[VMS] Failed to filter server '%s:%d' due to error.", *newSrv.Ip, *newSrv.Port)
+				utils.DebugMsg(1, cfg.Verbose, "[VMS] Failed to filter server '%s:%d' due to error. Setting to invisible just in case.", *newSrv.Ip, *newSrv.Port)
 				utils.DebugMsg(1, cfg.Verbose, err.Error())
 
-				continue
+				*newSrv.Visible = false
 			}
 
 			if filtered {
-				utils.DebugMsg(3, cfg.Verbose, "[VMS] Skipping '%s:%d' due to being filtered.", *newSrv.Ip, *newSrv.Port)
+				utils.DebugMsg(3, cfg.Verbose, "[VMS] Setting '%s:%d' to invisible due to being filtered.", *newSrv.Ip, *newSrv.Port)
 
-				continue
+				*newSrv.Visible = false
 			}
 
 			// Append to servers to update array.

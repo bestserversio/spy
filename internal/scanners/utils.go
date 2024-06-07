@@ -51,6 +51,11 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 		for i := 0; i < len(allServers); i++ {
 			srv := &allServers[i]
 
+			// Allocate visibility if needed.
+			if srv.Visible == nil {
+				srv.Visible = new(bool)
+			}
+
 			// Allocate online if needed.
 			if srv.Online == nil {
 				srv.Online = new(bool)
@@ -93,6 +98,22 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 
 					*srv.Online = false
 				}
+			}
+
+			// Check for filters.
+			filtered, err := srv.FilterServer(cfg)
+
+			if err != nil {
+				utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Failed to filter server '%s:%d' due to error. Setting to invisible.", idx, *srv.Ip, *srv.Port)
+				utils.DebugMsg(1, cfg.Verbose, err.Error())
+
+				*srv.Visible = false
+			}
+
+			if filtered {
+				utils.DebugMsg(3, cfg.Verbose, "[SCANNER %d] Found '%s:%d' filtered. Setting to invisible.", idx, *srv.Ip, *srv.Port)
+
+				*srv.Visible = false
 			}
 
 			utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Updating server '%s:%d' for platform ID '%d'. Players => %d. Max players => %d. Map => %s.", idx, *srv.Ip, *srv.Port, platform_id, *srv.CurUsers, *srv.MaxUsers, *srv.MapName)
