@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"fmt"
+	"net"
 	"strconv"
 	"strings"
 )
@@ -35,11 +37,26 @@ func ContainsIps(ip string, match_ips []string) (bool, error) {
 			}
 
 			// If we have a /32, perform a simple match.
-			if cidr == 32 && ip == m_ip {
-				return true, err
-			}
+			if cidr == 32 {
+				if ip == data[0] {
+					return true, err
+				}
+			} else {
+				// Check if the IP falls within the CIDR range
+				_, network, err := net.ParseCIDR(m_ip)
 
-			// To Do: Check if IP is in range.
+				if err != nil {
+					fmt.Println("[ContainsIps] Invalid CIDR notation: ", m_ip)
+
+					continue
+				}
+
+				ipAddr := net.ParseIP(ip)
+
+				if network.Contains(ipAddr) {
+					return true, err
+				}
+			}
 		}
 	}
 	return false, err
