@@ -60,7 +60,7 @@ func DoVms(cfg *config.Config) {
 			// Create new servers object from servers package and assign basic values.
 			newSrv := servers.Server{
 				Online:      new(bool),
-				HostName:    new(string),
+				Name:        new(string),
 				CurUsers:    new(int),
 				MaxUsers:    new(int),
 				MapName:     new(string),
@@ -72,7 +72,7 @@ func DoVms(cfg *config.Config) {
 				Region:      new(string),
 			}
 			*newSrv.Online = true
-			*newSrv.HostName = srv.HostName
+			*newSrv.Name = srv.HostName
 			*newSrv.CurUsers = srv.Players
 			*newSrv.MaxUsers = srv.MaxPlayers
 			*newSrv.MapName = srv.Map
@@ -120,7 +120,7 @@ func DoVms(cfg *config.Config) {
 			// Append to servers to update array.
 			serversToUpdate = append(serversToUpdate, newSrv)
 
-			utils.DebugMsg(4, cfg.Verbose, "[VMS] Found and adding/updating server '%s:%d'. Host Name => '%s'. Players => %d. Max Players => %d. Map Name => '%s'.", *newSrv.Ip, *newSrv.Port, *newSrv.HostName, *newSrv.CurUsers, *newSrv.MaxUsers, *newSrv.MapName)
+			utils.DebugMsg(4, cfg.Verbose, "[VMS] Found and adding/updating server '%s:%d'. Host Name => '%s'. Players => %d. Max Players => %d. Map Name => '%s'.", *newSrv.Ip, *newSrv.Port, *newSrv.Name, *newSrv.CurUsers, *newSrv.MaxUsers, *newSrv.MapName)
 		}
 
 		if len(serversToUpdate) < 1 {
