@@ -56,6 +56,8 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 				srv.Visible = new(bool)
 			}
 
+			*srv.Visible = true
+
 			// Allocate online if needed.
 			if srv.Online == nil {
 				srv.Online = new(bool)

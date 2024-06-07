@@ -72,6 +72,7 @@ func DoVms(cfg *config.Config) {
 				LastQueried: new(string),
 				Region:      new(string),
 			}
+			*newSrv.Visible = true
 			*newSrv.Online = true
 			*newSrv.Name = srv.HostName
 			*newSrv.CurUsers = srv.Players
