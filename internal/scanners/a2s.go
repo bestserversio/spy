@@ -32,6 +32,13 @@ func QueryA2s(server *servers.Server) error {
 		return err
 	}
 
+	// Update name if needed.
+	if server.Name == nil {
+		server.Name = new(string)
+	}
+
+	*server.Name = info.Name
+
 	// Set current users.
 	if server.CurUsers == nil {
 		server.CurUsers = new(int)
