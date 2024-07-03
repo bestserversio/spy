@@ -2,6 +2,7 @@ package scanners
 
 import (
 	"math/rand"
+	"sync"
 	"time"
 
 	"github.com/bestserversio/spy/internal/config"
@@ -38,6 +39,8 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 			utils.DebugMsg(1, cfg.Verbose, err.Error())
 
 			Respin(scanner)
+
+			continue
 		}
 
 		utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Found %d servers to update from API for platform ID '%d'!", idx, len(allServers), platform_id)
@@ -45,81 +48,93 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 		// Make sure we have servers.
 		if len(allServers) < 1 {
 			Respin(scanner)
+
+			continue
 		}
+
+		var wg sync.WaitGroup
 
 		// Loop through each server and update.
 		for i := 0; i < len(allServers); i++ {
-			srv := &allServers[i]
+			wg.Add(1)
 
-			// Allocate visibility if needed.
-			if srv.Visible == nil {
-				srv.Visible = new(bool)
-			}
+			go func(i int) {
+				defer wg.Done()
 
-			*srv.Visible = true
+				srv := &allServers[i]
 
-			// Allocate online if needed.
-			if srv.Online == nil {
-				srv.Online = new(bool)
-			}
-
-			// Set where clause.
-			if srv.Where.Id == nil {
-				srv.Where.Id = new(int)
-			}
-
-			*srv.Where.Id = *srv.Id
-
-			// Make original ID nil.
-			srv.Id = nil
-
-			// Update last queried to now.
-			if srv.LastQueried == nil {
-				srv.LastQueried = new(string)
-			}
-
-			now := time.Now().UTC()
-			isoDate := now.Format("2006-01-02T15:04:05Z")
-
-			*srv.LastQueried = isoDate
-
-			switch query_type {
-			case 0:
-				if srv.Ip == nil || srv.Port == nil {
-					utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Missing IP/port for server. Skipping.", idx)
-
-					continue
+				// Allocate visibility if needed.
+				if srv.Visible == nil {
+					srv.Visible = new(bool)
 				}
 
-				// Try querying server with A2S and check for error..
-				err = QueryA2s(srv)
+				*srv.Visible = true
+
+				// Allocate online if needed.
+				if srv.Online == nil {
+					srv.Online = new(bool)
+				}
+
+				// Set where clause.
+				if srv.Where.Id == nil {
+					srv.Where.Id = new(int)
+				}
+
+				*srv.Where.Id = *srv.Id
+
+				// Make original ID nil.
+				srv.Id = nil
+
+				// Update last queried to now.
+				if srv.LastQueried == nil {
+					srv.LastQueried = new(string)
+				}
+
+				now := time.Now().UTC()
+				isoDate := now.Format("2006-01-02T15:04:05Z")
+
+				*srv.LastQueried = isoDate
+
+				switch query_type {
+				case 0:
+					if srv.Ip == nil || srv.Port == nil {
+						utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Missing IP/port for server. Skipping.", idx)
+
+						return
+					}
+
+					// Try querying server with A2S and check for error..
+					err = QueryA2s(srv)
+
+					if err != nil {
+						utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Failed to query A2S server '%s:%d' due to error.", idx, *srv.Ip, *srv.Port)
+						utils.DebugMsg(4, cfg.Verbose, err.Error())
+
+						*srv.Online = false
+					}
+				}
+
+				// Check for filters.
+				filtered, err := srv.FilterServer(cfg)
 
 				if err != nil {
-					utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Failed to query A2S server '%s:%d' due to error.", idx, *srv.Ip, *srv.Port)
-					utils.DebugMsg(4, cfg.Verbose, err.Error())
+					utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Failed to filter server '%s:%d' due to error. Setting to invisible.", idx, *srv.Ip, *srv.Port)
+					utils.DebugMsg(1, cfg.Verbose, err.Error())
 
-					*srv.Online = false
+					*srv.Visible = false
 				}
-			}
 
-			// Check for filters.
-			filtered, err := srv.FilterServer(cfg)
+				if filtered {
+					utils.DebugMsg(3, cfg.Verbose, "[SCANNER %d] Found '%s:%d' filtered. Setting to invisible.", idx, *srv.Ip, *srv.Port)
 
-			if err != nil {
-				utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Failed to filter server '%s:%d' due to error. Setting to invisible.", idx, *srv.Ip, *srv.Port)
-				utils.DebugMsg(1, cfg.Verbose, err.Error())
+					*srv.Visible = false
+				}
 
-				*srv.Visible = false
-			}
-
-			if filtered {
-				utils.DebugMsg(3, cfg.Verbose, "[SCANNER %d] Found '%s:%d' filtered. Setting to invisible.", idx, *srv.Ip, *srv.Port)
-
-				*srv.Visible = false
-			}
-
-			utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Updating server '%s:%d' for platform ID '%d'. Players => %d. Max players => %d. Map => %s.", idx, *srv.Ip, *srv.Port, platform_id, *srv.CurUsers, *srv.MaxUsers, *srv.MapName)
+				utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Updating server '%s:%d' for platform ID '%d'. Players => %d. Max players => %d. Map => %s.", idx, *srv.Ip, *srv.Port, platform_id, *srv.CurUsers, *srv.MaxUsers, *srv.MapName)
+			}(i)
 		}
+
+		wg.Wait()
 
 		if !scanner.RecvOnly {
 			// Update servers.
