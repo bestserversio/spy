@@ -26,7 +26,7 @@ func RetrieveServers(cfg *config.Config, appId int) ([]Server, error) {
 	}
 
 	// Compile URL.
-	url := fmt.Sprintf("%s?key=%s&filter=\\appid\\%d", STEAM_API_URL, cfg.Vms.ApiToken, appId)
+	url := fmt.Sprintf("%s?limit=%d&key=%s&filter=\\appid\\%d", STEAM_API_URL, cfg.Vms.Limit, cfg.Vms.ApiToken, appId)
 
 	// Create response and check.
 	req, err := http.NewRequest("GET", url, nil)

@@ -14,6 +14,7 @@ type VMS struct {
 	RecvOnly bool   `json:"recv_only"`
 	MinWait  int    `json:"min_wait"`
 	MaxWait  int    `json:"max_wait"`
+	Limit    int    `json:"limit"`
 }
 
 type Scanner struct {
