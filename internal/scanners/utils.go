@@ -58,10 +58,10 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 		for i := 0; i < len(allServers); i++ {
 			wg.Add(1)
 
-			go func(i int) {
-				defer wg.Done()
+			srv := &allServers[i]
 
-				srv := &allServers[i]
+			go func(srv *servers.Server) {
+				defer wg.Done()
 
 				// Allocate visibility if needed.
 				if srv.Visible == nil {
@@ -131,7 +131,7 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 				}
 
 				utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Updating server '%s:%d' for platform ID '%d'. Players => %d. Max players => %d. Map => %s.", idx, *srv.Ip, *srv.Port, platform_id, *srv.CurUsers, *srv.MaxUsers, *srv.MapName)
-			}(i)
+			}(srv)
 		}
 
 		wg.Wait()
