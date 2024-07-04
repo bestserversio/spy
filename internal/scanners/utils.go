@@ -61,6 +61,12 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 			srv := &allServers[i]
 
 			go func(srv *servers.Server) {
+				defer func() {
+					if r := recover(); r != nil {
+						utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Found panic when scanning '%s:%d'.", *srv.Ip, *srv.Port)
+					}
+				}()
+
 				var err error
 				defer wg.Done()
 
