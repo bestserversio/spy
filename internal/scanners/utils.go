@@ -61,6 +61,7 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 			srv := &allServers[i]
 
 			go func(srv *servers.Server) {
+				var err error
 				defer wg.Done()
 
 				// Allocate visibility if needed.
