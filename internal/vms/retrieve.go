@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
-	"strconv"
 	"time"
 
 	"github.com/bestserversio/spy/internal/config"
@@ -27,28 +25,16 @@ func RetrieveServers(cfg *config.Config, appId int) ([]Server, error) {
 		Timeout: time.Duration(cfg.Vms.Timeout) * time.Second,
 	}
 
-	// Compile query parameters.
-	params := url.Values{}
-
-	// Add limit parameter.
-	params.Add("limit", strconv.Itoa(cfg.Vms.Limit))
-
-	// Add key parameter.
-	params.Add("key", cfg.Vms.ApiToken)
-
 	// Start building filters string.
 	filters := fmt.Sprintf("\\appid\\%d", appId)
 
-	// Add no players if exclude empty is set.
+	// Add empty if exclude empty is set.
 	if cfg.Vms.ExcludeEmpty {
-		filters = fmt.Sprintf("%s\\noplayers\\1", filters)
+		filters = fmt.Sprintf("%s\\empty\\1", filters)
 	}
 
-	// Add filters parameter
-	params.Add("filters", filters)
-
 	// Compile URL.
-	url := fmt.Sprintf("%s?%s", STEAM_API_URL, params.Encode())
+	url := fmt.Sprintf("%s?key=%s&filter=%s&limit=%d", STEAM_API_URL, cfg.Vms.ApiToken, filters, cfg.Vms.Limit)
 
 	// Create response and check.
 	req, err := http.NewRequest("GET", url, nil)
