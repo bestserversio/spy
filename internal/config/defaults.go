@@ -10,4 +10,5 @@ func (cfg *Config) LoadDefaults() {
 	cfg.Vms.MaxWait = 180
 	cfg.Vms.Timeout = 5
 	cfg.Vms.Limit = 100
+	cfg.Vms.ExcludeEmpty = true
 }

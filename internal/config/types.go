@@ -7,14 +7,15 @@ type API struct {
 }
 
 type VMS struct {
-	Enabled  bool   `json:"enabled"`
-	Timeout  int    `json:"timeout"`
-	ApiToken string `json:"api_token"`
-	AppIds   []int  `json:"app_ids"`
-	RecvOnly bool   `json:"recv_only"`
-	MinWait  int    `json:"min_wait"`
-	MaxWait  int    `json:"max_wait"`
-	Limit    int    `json:"limit"`
+	Enabled      bool   `json:"enabled"`
+	Timeout      int    `json:"timeout"`
+	ApiToken     string `json:"api_token"`
+	AppIds       []int  `json:"app_ids"`
+	RecvOnly     bool   `json:"recv_only"`
+	MinWait      int    `json:"min_wait"`
+	MaxWait      int    `json:"max_wait"`
+	Limit        int    `json:"limit"`
+	ExcludeEmpty bool   `json:"hide_empty"`
 }
 
 type Scanner struct {
