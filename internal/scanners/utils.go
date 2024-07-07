@@ -138,7 +138,7 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 				}
 
 				// Check for sub bots.
-				if scanner.SubBots && (srv.CurUsers != nil && srv.Bots != nil) {
+				if scanner.SubBots && (srv.CurUsers != nil && srv.Bots != nil) && ((*srv.CurUsers - *srv.Bots) > -1) {
 					*srv.CurUsers -= *srv.Bots
 				}
 

@@ -85,7 +85,7 @@ func DoVms(cfg *config.Config) {
 			*newSrv.Region = utils.GetRegion(srv.Region)
 
 			// Check for sub bots.
-			if cfg.Vms.SubBots {
+			if cfg.Vms.SubBots && (*newSrv.CurUsers-*newSrv.Bots) > -1 {
 				*newSrv.CurUsers -= *newSrv.Bots
 			}
 
