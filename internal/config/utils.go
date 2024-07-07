@@ -23,6 +23,14 @@ func (cfg *Config) PrintConfig() {
 	fmt.Println("\t\tTimeout => " + strconv.Itoa(cfg.Vms.Timeout))
 	fmt.Println("\t\tAPI Token => " + cfg.Vms.ApiToken)
 
+	sub_bots := "No"
+
+	if cfg.Vms.SubBots {
+		sub_bots = "Yes"
+	}
+
+	fmt.Println("\t\tSub Bots => " + sub_bots)
+
 	appIdList := make([]string, len(cfg.Vms.AppIds))
 	for i, num := range cfg.Vms.AppIds {
 		appIdList[i] = strconv.Itoa(num)
@@ -39,6 +47,13 @@ func (cfg *Config) PrintConfig() {
 			fmt.Println("\t\t\tProtocol => " + s.Protocol)
 			fmt.Println("\t\t\tMin Wait => " + strconv.Itoa(s.MinWait))
 			fmt.Println("\t\t\tMax Wait => " + strconv.Itoa(s.MaxWait))
+			sub_bots := "No"
+
+			if s.SubBots {
+				sub_bots = "Yes"
+			}
+
+			fmt.Println("\t\t\tSub Bots => " + sub_bots)
 
 			ids := "None"
 

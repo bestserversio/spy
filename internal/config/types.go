@@ -16,6 +16,7 @@ type VMS struct {
 	MaxWait      int    `json:"max_wait"`
 	Limit        int    `json:"limit"`
 	ExcludeEmpty bool   `json:"hide_empty"`
+	SubBots      bool   `json:"sub_bots"`
 }
 
 type Scanner struct {
@@ -25,6 +26,7 @@ type Scanner struct {
 	MaxWait     int    `json:"max_wait"`
 	Limit       int    `json:"limit"`
 	RecvOnly    bool   `json:"recv_only"`
+	SubBots     bool   `json:"sub_bots"`
 }
 
 type PlatformMapper struct {

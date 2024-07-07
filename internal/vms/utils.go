@@ -64,6 +64,7 @@ func DoVms(cfg *config.Config) {
 				Name:        new(string),
 				CurUsers:    new(int),
 				MaxUsers:    new(int),
+				Bots:        new(int),
 				MapName:     new(string),
 				Ip:          new(string),
 				Port:        new(int),
@@ -77,10 +78,16 @@ func DoVms(cfg *config.Config) {
 			*newSrv.Name = srv.HostName
 			*newSrv.CurUsers = srv.Players
 			*newSrv.MaxUsers = srv.MaxPlayers
+			*newSrv.Bots = srv.Bots
 			*newSrv.MapName = srv.Map
 			*newSrv.PlatformId = platform_id
 			*newSrv.Os = srv.Os
 			*newSrv.Region = utils.GetRegion(srv.Region)
+
+			// Check for sub bots.
+			if cfg.Vms.SubBots {
+				*newSrv.CurUsers -= *newSrv.Bots
+			}
 
 			// Set last queries.
 			now := time.Now().UTC()

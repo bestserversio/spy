@@ -11,4 +11,5 @@ func (cfg *Config) LoadDefaults() {
 	cfg.Vms.Timeout = 5
 	cfg.Vms.Limit = 100
 	cfg.Vms.ExcludeEmpty = true
+	cfg.Vms.SubBots = true
 }

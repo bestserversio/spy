@@ -137,6 +137,11 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 					*srv.Visible = false
 				}
 
+				// Check for sub bots.
+				if scanner.SubBots && (srv.CurUsers != nil && srv.Bots != nil) {
+					*srv.CurUsers -= *srv.Bots
+				}
+
 				utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Updating server '%s:%d' for platform ID '%d'. Players => %d. Max players => %d. Map => %s.", idx, *srv.Ip, *srv.Port, platform_id, *srv.CurUsers, *srv.MaxUsers, *srv.MapName)
 			}(srv)
 		}
