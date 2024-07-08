@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/bestserversio/spy/internal/config"
 	"github.com/bestserversio/spy/internal/scanners"
@@ -78,13 +79,34 @@ func main() {
 		os.Exit(0)
 	}
 
+	// Check for web API updating.
+	if cfg.WebApi.Enabled {
+		go func() {
+			var err error
+
+			for {
+				utils.DebugMsg(3, cfg.Verbose, "[WEB_API] Retrieving web API from '%s%s'.", cfg.WebApi.Host, cfg.WebApi.Endpoint)
+
+				err = cfg.LoadFromWeb()
+
+				if err != nil {
+					utils.DebugMsg(1, cfg.Verbose, "[WEB_API] Failed to retrieve web API from '%s%s'.", cfg.WebApi.Host, cfg.WebApi.Endpoint)
+
+				}
+
+				// Resetup scanners.
+				scanners.SetupScanners(&cfg)
+
+				time.Sleep(time.Duration(cfg.WebApi.Interval) * time.Second)
+			}
+		}()
+	}
+
 	// Create VMS.
 	go vms.DoVms(&cfg)
 
-	// Create scanners.
-	for i, s := range cfg.Scanners {
-		go scanners.DoScanner(&cfg, &s, i+1)
-	}
+	// Setup scanners.
+	scanners.SetupScanners(&cfg)
 
 	// Make a signal.
 	sigc := make(chan os.Signal, 1)

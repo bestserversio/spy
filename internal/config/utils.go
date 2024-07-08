@@ -1,10 +1,17 @@
 package config
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
 )
+
+func (cfg *Config) Load(data string) error {
+	err := json.Unmarshal([]byte(data), cfg)
+
+	return err
+}
 
 func (cfg *Config) PrintConfig() {
 	fmt.Println("Config Settings")
@@ -15,6 +22,13 @@ func (cfg *Config) PrintConfig() {
 	fmt.Println("\t\tHost => " + cfg.Api.Host)
 	fmt.Println("\t\tAuthorization => " + cfg.Api.Authorization)
 	fmt.Println("\t\tTimeout => " + strconv.Itoa(cfg.Api.Timeout))
+
+	fmt.Println("\tWeb API")
+	fmt.Println("\t\tHost => " + cfg.WebApi.Host)
+	fmt.Println("\t\tEndpoint => " + cfg.WebApi.Endpoint)
+	fmt.Println("\t\tAuthorization => " + cfg.WebApi.Authorization)
+	fmt.Println("\t\tInterval => " + strconv.Itoa(cfg.WebApi.Interval))
+	fmt.Println("\t\tTimeout => " + strconv.Itoa(cfg.WebApi.Timeout))
 
 	fmt.Println("\tVMS")
 	fmt.Println("\t\tEnabled => " + strconv.FormatBool(cfg.Vms.Enabled))

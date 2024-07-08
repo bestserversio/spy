@@ -1,9 +1,18 @@
 package config
 
-type API struct {
+type BsAPI struct {
 	Host          string `json:"host"`
 	Authorization string `json:"authorization"`
 	Timeout       int    `json:"timeout"`
+}
+
+type WebApi struct {
+	Enabled       bool   `json:"enabled"`
+	Host          string `json:"host"`
+	Endpoint      string `json:"endpoint"`
+	Authorization string `json:"authorization"`
+	Timeout       int    `json:"timeout"`
+	Interval      int    `json:"interval"`
 }
 
 type VMS struct {
@@ -27,6 +36,7 @@ type Scanner struct {
 	Limit       int    `json:"limit"`
 	RecvOnly    bool   `json:"recv_only"`
 	SubBots     bool   `json:"sub_bots"`
+	Channel     chan bool
 }
 
 type PlatformMapper struct {
@@ -37,7 +47,8 @@ type PlatformMapper struct {
 type Config struct {
 	Verbose int `json:"verbose"`
 
-	Api          API              `json:"api"`
+	Api          BsAPI            `json:"api"`
+	WebApi       WebApi           `json:"web_api"`
 	Vms          VMS              `json:"vms"`
 	Scanners     []Scanner        `json:"scanners"`
 	PlatformMaps []PlatformMapper `json:"platform_maps"`

@@ -5,6 +5,11 @@ func (cfg *Config) LoadDefaults() {
 	cfg.Api.Authorization = ""
 	cfg.Api.Timeout = 5
 
+	cfg.WebApi.Host = "http://localhost"
+	cfg.WebApi.Endpoint = "/api/spy"
+	cfg.WebApi.Timeout = 5
+	cfg.WebApi.Interval = 120
+
 	cfg.Vms.Enabled = false
 	cfg.Vms.MinWait = 60
 	cfg.Vms.MaxWait = 180
