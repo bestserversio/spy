@@ -24,7 +24,7 @@ type VMS struct {
 	MinWait      int    `json:"min_wait"`
 	MaxWait      int    `json:"max_wait"`
 	Limit        int    `json:"limit"`
-	ExcludeEmpty bool   `json:"hide_empty"`
+	ExcludeEmpty bool   `json:"exclude_empty"`
 	SubBots      bool   `json:"sub_bots"`
 }
 
