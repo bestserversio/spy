@@ -103,6 +103,11 @@ func main() {
 				// Resetup scanners.
 				scanners.SetupScanners(&cfg)
 
+				// If we have no interval, close this function now.
+				if cfg.WebApi.Interval < 1 {
+					return
+				}
+
 				time.Sleep(interval)
 			}
 		}()
