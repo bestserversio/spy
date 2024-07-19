@@ -50,10 +50,14 @@ func RetrieveServers(cfg *config.Config, appId int) ([]Server, error) {
 	res, err := client.Do(req)
 
 	if err != nil {
-		return servers, nil
+		return servers, err
 	}
 
 	defer res.Body.Close()
+
+	if res.StatusCode != 200 {
+		return servers, fmt.Errorf("status code returned isn't 200 (%d)", res.StatusCode)
+	}
 
 	// Read response.
 	b, err := io.ReadAll(res.Body)
