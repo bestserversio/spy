@@ -39,10 +39,6 @@ func (cfg *Config) LoadFromFs(path string) error {
 func (cfg *Config) LoadFromWeb() (string, error) {
 	var err error
 
-	if !cfg.WebApi.Enabled {
-		return "", err
-	}
-
 	client := http.Client{
 		Timeout: time.Duration(cfg.WebApi.Timeout) * time.Second,
 	}

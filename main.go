@@ -70,7 +70,7 @@ func main() {
 		fmt.Println(err)
 	}
 
-	utils.DebugMsg(4, cfg.Verbose, "[MAIN] Config loaded...")
+	utils.DebugMsg(2, cfg.Verbose, "[CFG] Initial config loaded...")
 
 	// Check if we want to print our config settings.
 	if list {
@@ -83,6 +83,11 @@ func main() {
 	if cfg.WebApi.Enabled {
 		go func() {
 			for {
+				// Make sure web config is still enabled.
+				if !cfg.WebApi.Enabled {
+					return
+				}
+
 				// Get web API interval.
 				interval := time.Duration(cfg.WebApi.Interval) * time.Second
 
@@ -98,7 +103,7 @@ func main() {
 					continue
 				}
 
-				utils.DebugMsg(3, cfg.Verbose, "[WEB_API] Loading JSON => %s", data)
+				utils.DebugMsg(4, cfg.Verbose, "[WEB_API] Loading JSON => %s", data)
 
 				// Resetup scanners.
 				scanners.SetupScanners(&cfg)
