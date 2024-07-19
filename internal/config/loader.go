@@ -36,11 +36,11 @@ func (cfg *Config) LoadFromFs(path string) error {
 	return err
 }
 
-func (cfg *Config) LoadFromWeb() error {
+func (cfg *Config) LoadFromWeb() (string, error) {
 	var err error
 
 	if !cfg.WebApi.Enabled {
-		return err
+		return "", err
 	}
 
 	client := http.Client{
@@ -52,7 +52,7 @@ func (cfg *Config) LoadFromWeb() error {
 	req, err := http.NewRequest("GET", url, nil)
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	req.Header.Add("Authorization", cfg.WebApi.Authorization)
@@ -61,7 +61,7 @@ func (cfg *Config) LoadFromWeb() error {
 	res, err := client.Do(req)
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	defer res.Body.Close()
@@ -69,10 +69,10 @@ func (cfg *Config) LoadFromWeb() error {
 	b, err := io.ReadAll(res.Body)
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	err = cfg.Load(string(b))
 
-	return err
+	return string(b), err
 }

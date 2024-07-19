@@ -85,14 +85,12 @@ func RetrieveServers(cfg *config.Config, platform_id *int, limit *int) ([]Server
 	// Unmarshal byte array into servers structure and return result.
 	err = json.Unmarshal(b, &retrieveResp)
 
+	if err != nil {
+		return servers, err
+	}
+
 	// Assign servers to response.
 	servers = retrieveResp.Servers
-
-	// Verbose.
-	if cfg.Verbose > 1 {
-		fmt.Println("[GET] Found", retrieveResp.Count, "servers!")
-		fmt.Println("[GET] Response message =>", retrieveResp.Message)
-	}
 
 	return servers, err
 }

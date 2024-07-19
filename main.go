@@ -82,22 +82,28 @@ func main() {
 	// Check for web API updating.
 	if cfg.WebApi.Enabled {
 		go func() {
-			var err error
-
 			for {
+				// Get web API interval.
+				interval := time.Duration(cfg.WebApi.Interval) * time.Second
+
 				utils.DebugMsg(3, cfg.Verbose, "[WEB_API] Retrieving web API from '%s%s'.", cfg.WebApi.Host, cfg.WebApi.Endpoint)
 
-				err = cfg.LoadFromWeb()
+				data, err := cfg.LoadFromWeb()
 
 				if err != nil {
 					utils.DebugMsg(1, cfg.Verbose, "[WEB_API] Failed to retrieve web API from '%s%s'.", cfg.WebApi.Host, cfg.WebApi.Endpoint)
 
+					time.Sleep(interval)
+
+					continue
 				}
+
+				utils.DebugMsg(3, cfg.Verbose, "[WEB_API] Loading JSON => %s", data)
 
 				// Resetup scanners.
 				scanners.SetupScanners(&cfg)
 
-				time.Sleep(time.Duration(cfg.WebApi.Interval) * time.Second)
+				time.Sleep(interval)
 			}
 		}()
 	}
