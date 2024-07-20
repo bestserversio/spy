@@ -158,7 +158,7 @@ func DoVms(cfg *config.Config) {
 
 		// Add/update servers.
 		if !cfg.Vms.RecvOnly {
-			cnt, err := servers.AddServers(cfg, serversToUpdate, false)
+			cnt, err := servers.AddServers(cfg, serversToUpdate, cfg.Vms.AddOnly)
 
 			if err != nil {
 				utils.DebugMsg(1, cfg.Verbose, "[VMS] Failed to add/update servers for app ID %d due to error.", appId)

@@ -26,6 +26,7 @@ type VMS struct {
 	Limit        int    `json:"limit"`
 	ExcludeEmpty bool   `json:"exclude_empty"`
 	SubBots      bool   `json:"sub_bots"`
+	AddOnly      bool   `json:"add_only"`
 }
 
 type Scanner struct {
