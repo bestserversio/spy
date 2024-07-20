@@ -75,7 +75,7 @@ func AddServers(cfg *config.Config, servers []Server, addOnly bool) (int, error)
 		return cnt, err
 	}
 
-	utils.DebugMsg(4, cfg.Verbose, "[SERVERS] Using request body: %s", string(upBytes))
+	utils.DebugMsg(6, cfg.Verbose, "[SERVERS] Using request body: %s", string(upBytes))
 
 	// Create new request and check for error.
 	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(upBytes))

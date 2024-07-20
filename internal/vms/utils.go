@@ -145,7 +145,7 @@ func DoVms(cfg *config.Config) {
 			// Append to servers to update array.
 			serversToUpdate = append(serversToUpdate, newSrv)
 
-			utils.DebugMsg(4, cfg.Verbose, "[VMS] Found and adding/updating server '%s:%d'. Host Name => '%s'. Players => %d. Max Players => %d. Map Name => '%s'.", *newSrv.Ip, *newSrv.Port, *newSrv.Name, *newSrv.CurUsers, *newSrv.MaxUsers, *newSrv.MapName)
+			utils.DebugMsg(5, cfg.Verbose, "[VMS] Found and adding/updating server '%s:%d'. Host Name => '%s'. Players => %d. Max Players => %d. Map Name => '%s'.", *newSrv.Ip, *newSrv.Port, *newSrv.Name, *newSrv.CurUsers, *newSrv.MaxUsers, *newSrv.MapName)
 		}
 
 		if len(serversToUpdate) < 1 {

@@ -103,7 +103,7 @@ func main() {
 					continue
 				}
 
-				utils.DebugMsg(4, cfg.Verbose, "[WEB_API] Loading JSON => %s", data)
+				utils.DebugMsg(6, cfg.Verbose, "[WEB_API] Loading JSON => %s", data)
 
 				// Resetup scanners.
 				scanners.SetupScanners(&cfg)

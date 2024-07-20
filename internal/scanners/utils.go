@@ -64,10 +64,10 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 
 				srv := &allServers[i]
 
-				go func(srv *servers.Server) {
+				go func(srv *servers.Server, i int) {
 					defer func() {
 						if r := recover(); r != nil {
-							utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Found panic when scanning '%s:%d'.", *srv.Ip, *srv.Port)
+							utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Found panic when scanning '%s:%d'.", i, *srv.Ip, *srv.Port)
 						}
 					}()
 
@@ -122,11 +122,10 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 						}
 
 						// Try querying server with A2S and check for error..
-						err = QueryA2s(srv, timeout)
+						err = QueryA2s(srv, timeout, scanner.A2sPlayer)
 
 						if err != nil {
-							utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Failed to query A2S server '%s:%d' due to error.", idx, *srv.Ip, *srv.Port)
-							utils.DebugMsg(4, cfg.Verbose, err.Error())
+							utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Failed to query A2S server '%s:%d' due to error :: %s.", idx, *srv.Ip, *srv.Port, err.Error())
 
 							*srv.Online = false
 						}
@@ -153,8 +152,8 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 						*srv.CurUsers -= *srv.Bots
 					}
 
-					utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Updating server '%s:%d' for platform ID '%d'. Players => %d. Max players => %d. Map => %s.", idx, *srv.Ip, *srv.Port, platform_id, *srv.CurUsers, *srv.MaxUsers, *srv.MapName)
-				}(srv)
+					utils.DebugMsg(5, cfg.Verbose, "[SCANNER %d] Updating server '%s:%d' for platform ID '%d'. Players => %d. Max players => %d. Map => %s.", idx, *srv.Ip, *srv.Port, platform_id, *srv.CurUsers, *srv.MaxUsers, *srv.MapName)
+				}(srv, i)
 			}
 
 			wg.Wait()
