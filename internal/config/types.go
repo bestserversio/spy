@@ -37,6 +37,7 @@ type Scanner struct {
 	RecvOnly     bool   `json:"recv_only"`
 	SubBots      bool   `json:"sub_bots"`
 	QueryTimeout int    `json:"query_timeout"`
+	A2sPlayer    bool   `json:"a2s_player"`
 	Channel      chan bool
 }
 
