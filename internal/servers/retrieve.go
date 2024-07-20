@@ -69,6 +69,10 @@ func RetrieveServers(cfg *config.Config, platform_id *int, limit *int) ([]Server
 		return servers, err
 	}
 
+	if res.StatusCode != 200 {
+		return servers, fmt.Errorf("status code did not return 200 (%d)", res.StatusCode)
+	}
+
 	// Make sure we close body at end.
 	defer res.Body.Close()
 
