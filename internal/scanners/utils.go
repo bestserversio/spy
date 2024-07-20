@@ -114,8 +114,15 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 							return
 						}
 
+						// Retrieve timeout.
+						timeout := scanner.QueryTimeout
+
+						if timeout < 1 {
+							timeout = 3
+						}
+
 						// Try querying server with A2S and check for error..
-						err = QueryA2s(srv)
+						err = QueryA2s(srv, timeout)
 
 						if err != nil {
 							utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Failed to query A2S server '%s:%d' due to error.", idx, *srv.Ip, *srv.Port)

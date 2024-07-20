@@ -2,12 +2,13 @@ package scanners
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/bestserversio/spy/internal/servers"
 	"github.com/rumblefrog/go-a2s"
 )
 
-func QueryA2s(server *servers.Server) error {
+func QueryA2s(server *servers.Server, timeout int) error {
 	var err error
 
 	if server.Ip == nil || server.Port == nil {
@@ -19,7 +20,9 @@ func QueryA2s(server *servers.Server) error {
 	// Format IP/port address string.
 	connStr := fmt.Sprintf("%s:%d", *server.Ip, *server.Port)
 
-	cl, err := a2s.NewClient(connStr)
+	cl, err := a2s.NewClient(connStr,
+		a2s.TimeoutOption(time.Second*time.Duration(timeout)),
+	)
 
 	if err != nil {
 		return err

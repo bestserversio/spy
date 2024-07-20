@@ -29,14 +29,15 @@ type VMS struct {
 }
 
 type Scanner struct {
-	Protocol    string `json:"protocol"`
-	PlatformIds []int  `json:"platform_ids"`
-	MinWait     int    `json:"min_wait"`
-	MaxWait     int    `json:"max_wait"`
-	Limit       int    `json:"limit"`
-	RecvOnly    bool   `json:"recv_only"`
-	SubBots     bool   `json:"sub_bots"`
-	Channel     chan bool
+	Protocol     string `json:"protocol"`
+	PlatformIds  []int  `json:"platform_ids"`
+	MinWait      int    `json:"min_wait"`
+	MaxWait      int    `json:"max_wait"`
+	Limit        int    `json:"limit"`
+	RecvOnly     bool   `json:"recv_only"`
+	SubBots      bool   `json:"sub_bots"`
+	QueryTimeout int    `json:"query_timeout"`
+	Channel      chan bool
 }
 
 type PlatformMapper struct {
