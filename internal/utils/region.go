@@ -5,9 +5,9 @@ func GetRegion(region int) string {
 
 	switch region {
 	case 0:
-		ret = "US"
+		ret = "NA"
 	case 1:
-		ret = "US"
+		ret = "NA"
 	case 2:
 		ret = "SA"
 	case 3:
