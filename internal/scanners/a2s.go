@@ -8,7 +8,7 @@ import (
 	"github.com/rumblefrog/go-a2s"
 )
 
-func QueryA2s(server *servers.Server, timeout int) error {
+func QueryA2s(server *servers.Server, timeout int, a2sPlayer bool) error {
 	var err error
 
 	if server.Ip == nil || server.Port == nil {
@@ -119,10 +119,12 @@ func QueryA2s(server *servers.Server, timeout int) error {
 	ply, err := cl.QueryPlayer()
 
 	// Make sure count matches online player count.
-	if err != nil || ply.Count != info.Players {
+	if a2sPlayer && (err != nil || ply.Count != info.Players) {
 		// Set to offline since it's invalid.
-		*server.Online = false
+		return fmt.Errorf("a2s_player failed")
 	}
+
+	*server.Online = true
 
 	return err
 }
