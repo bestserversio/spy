@@ -19,7 +19,7 @@ type RetrieveResp struct {
 	Message string   `json:"message"`
 }
 
-func RetrieveServers(cfg *config.Config, platform_id *int, limit *int) ([]Server, error) {
+func RetrieveServers(cfg *config.Config, platform_id *uint, limit *int) ([]Server, error) {
 	// Initiailize what we're returning.
 	servers := []Server{}
 	var err error
@@ -33,7 +33,7 @@ func RetrieveServers(cfg *config.Config, platform_id *int, limit *int) ([]Server
 	params := url.Values{}
 
 	if platform_id != nil {
-		params.Add("platformId", strconv.Itoa(*platform_id))
+		params.Add("platformId", strconv.Itoa(int(*platform_id)))
 	}
 
 	if limit != nil {

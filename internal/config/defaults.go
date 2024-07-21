@@ -6,7 +6,7 @@ func (cfg *Config) LoadDefaults() {
 	cfg.Api.Timeout = 5
 
 	cfg.WebApi.Host = "http://localhost"
-	cfg.WebApi.Endpoint = "/api/spy"
+	cfg.WebApi.Endpoint = "/api/spy/get"
 	cfg.WebApi.Timeout = 5
 	cfg.WebApi.Interval = 120
 

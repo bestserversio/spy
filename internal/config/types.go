@@ -31,7 +31,7 @@ type VMS struct {
 
 type Scanner struct {
 	Protocol     string `json:"protocol"`
-	PlatformIds  []int  `json:"platform_ids"`
+	PlatformIds  []uint `json:"platform_ids"`
 	MinWait      int    `json:"min_wait"`
 	MaxWait      int    `json:"max_wait"`
 	Limit        int    `json:"limit"`

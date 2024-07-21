@@ -75,7 +75,7 @@ func (cfg *Config) PrintConfig() {
 				var ids_s []string
 
 				for _, a := range s.PlatformIds {
-					ids_s = append(ids_s, strconv.Itoa(a))
+					ids_s = append(ids_s, strconv.Itoa(int(a)))
 				}
 
 				ids = strings.Join(ids_s, ", ")
