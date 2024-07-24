@@ -120,7 +120,7 @@ func main() {
 	}
 
 	// Setup remove inactive.
-	go func(cfg *config.Config) {
+	go func() {
 		for {
 			if !cfg.RemoveInactive.Enabled {
 				time.Sleep(time.Second * 1)
@@ -145,7 +145,7 @@ func main() {
 
 			time.Sleep(time.Second * time.Duration(cfg.RemoveInactive.Interval))
 		}
-	}(&cfg)
+	}()
 
 	// Create VMS.
 	go vms.DoVms(&cfg)
