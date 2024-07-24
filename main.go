@@ -10,6 +10,7 @@ import (
 
 	"github.com/bestserversio/spy/internal/config"
 	"github.com/bestserversio/spy/internal/scanners"
+	"github.com/bestserversio/spy/internal/servers"
 	"github.com/bestserversio/spy/internal/utils"
 	"github.com/bestserversio/spy/internal/vms"
 )
@@ -117,6 +118,34 @@ func main() {
 			}
 		}()
 	}
+
+	// Setup remove inactive.
+	go func(cfg *config.Config) {
+		for {
+			if !cfg.RemoveInactive.Enabled {
+				time.Sleep(time.Second * 1)
+
+				continue
+			}
+
+			var inactive_time *int = nil
+
+			if cfg.RemoveInactive.InactiveTime > 0 {
+				inactive_time = new(int)
+				*inactive_time = cfg.RemoveInactive.InactiveTime
+			}
+
+			cnt, err := servers.RemoveInactive(cfg, inactive_time)
+
+			if err != nil {
+				utils.DebugMsg(1, cfg.Verbose, "[INACTIVE] Failed to remove inactive servers due to error :: %s", err.Error())
+			} else {
+				utils.DebugMsg(1, cfg.Verbose, "[INACTIVE] Removed %d inactive servers!", cnt)
+			}
+
+			time.Sleep(time.Second * time.Duration(cfg.RemoveInactive.Interval))
+		}
+	}(&cfg)
 
 	// Create VMS.
 	go vms.DoVms(&cfg)

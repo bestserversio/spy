@@ -47,15 +47,23 @@ type PlatformMapper struct {
 	PlatformId int `json:"platform_id"`
 }
 
+type RemoveInactive struct {
+	Enabled      bool `json:"enabled"`
+	Interval     int  `json:"interval"`
+	InactiveTime int  `json:"inactive_time"`
+	Timeout      int  `json:"timeout"`
+}
+
 type Config struct {
 	Verbose int `json:"verbose"`
 
-	Api          BsAPI            `json:"api"`
-	WebApi       WebApi           `json:"web_api"`
-	Vms          VMS              `json:"vms"`
-	Scanners     []Scanner        `json:"scanners"`
-	PlatformMaps []PlatformMapper `json:"platform_maps"`
-	BadNames     []string         `json:"bad_names"`
-	BadIps       []string         `json:"bad_ips"`
-	BadAsns      []uint           `json:"bad_asns"`
+	Api            BsAPI            `json:"api"`
+	WebApi         WebApi           `json:"web_api"`
+	Vms            VMS              `json:"vms"`
+	Scanners       []Scanner        `json:"scanners"`
+	PlatformMaps   []PlatformMapper `json:"platform_maps"`
+	BadNames       []string         `json:"bad_names"`
+	BadIps         []string         `json:"bad_ips"`
+	BadAsns        []uint           `json:"bad_asns"`
+	RemoveInactive RemoveInactive   `json:"remove_inactive"`
 }
