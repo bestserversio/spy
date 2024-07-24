@@ -135,7 +135,7 @@ func main() {
 				*inactive_time = cfg.RemoveInactive.InactiveTime
 			}
 
-			cnt, err := servers.RemoveInactive(cfg, inactive_time)
+			cnt, err := servers.RemoveInactive(&cfg, inactive_time)
 
 			if err != nil {
 				utils.DebugMsg(1, cfg.Verbose, "[INACTIVE] Failed to remove inactive servers due to error :: %s", err.Error())
