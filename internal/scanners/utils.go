@@ -152,6 +152,19 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 						*srv.CurUsers -= *srv.Bots
 					}
 
+					// If we're online, set last online.
+					if *srv.Online {
+						// Update last queried to now.
+						if srv.LastOnline == nil {
+							srv.LastOnline = new(string)
+						}
+
+						now := time.Now().UTC()
+						isoDate := now.Format("2006-01-02T15:04:05Z")
+
+						*srv.LastOnline = isoDate
+					}
+
 					utils.DebugMsg(5, cfg.Verbose, "[SCANNER %d] Updating server '%s:%d' for platform ID '%d'. Players => %d. Max players => %d. Map => %s.", idx, *srv.Ip, *srv.Port, platform_id, *srv.CurUsers, *srv.MaxUsers, *srv.MapName)
 				}(srv, i)
 			}

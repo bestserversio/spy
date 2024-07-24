@@ -46,6 +46,7 @@ type Server struct {
 	LocationLon *float64 `json:"locationLon,omitempty"`
 
 	LastQueried *string `json:"lastQueried,omitempty"`
+	LastOnline  *string `json:"lastOnline,omitempty"`
 }
 
 type ServerClaimKey struct {
