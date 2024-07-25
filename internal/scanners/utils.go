@@ -20,18 +20,24 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 
 	utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Starting scanner with protocol '%s'!", idx, scanner.Protocol)
 
+	next_platform := 0
+
 	for {
 		select {
 		case <-scanner.Channel:
 			return
 		default:
-			// Reseed.
-			rand.Seed(time.Now().UnixNano())
+			if scanner.RandomPlatforms {
+				// Reseed.
+				rand.Seed(time.Now().UnixNano())
 
-			// We need to pick a random app ID.
-			rand_num := rand.Intn(len(scanner.PlatformIds))
+				// We need to pick a random app ID.
+				next_platform = rand.Intn(len(scanner.PlatformIds))
+			} else {
+				utils.GetNextIndex(&next_platform, len(scanner.PlatformIds))
+			}
 
-			platform_id := scanner.PlatformIds[rand_num]
+			platform_id := scanner.PlatformIds[next_platform]
 
 			utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Using platform ID %d.", idx, platform_id)
 

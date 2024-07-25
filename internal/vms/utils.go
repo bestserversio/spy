@@ -18,6 +18,8 @@ func Respin(cfg *config.Config) {
 func DoVms(cfg *config.Config) {
 	utils.DebugMsg(1, cfg.Verbose, "[VMS] Starting....")
 
+	next_app := 0
+
 	for {
 		if !cfg.Vms.Enabled {
 			utils.DebugMsg(5, cfg.Verbose, "[VMS] Found VMS disabled. Aborting DoVms().")
@@ -27,12 +29,16 @@ func DoVms(cfg *config.Config) {
 			continue
 		}
 
-		// Retrieve random app ID.
-		rand.Seed(time.Now().UnixNano())
+		if cfg.Vms.RandomApps {
+			// Retrieve random app ID.
+			rand.Seed(time.Now().UnixNano())
 
-		randIndex := rand.Intn(len(cfg.Vms.AppIds))
+			next_app = rand.Intn(len(cfg.Vms.AppIds))
+		} else {
+			utils.GetNextIndex(&next_app, len(cfg.Vms.AppIds))
+		}
 
-		appId := cfg.Vms.AppIds[randIndex]
+		appId := cfg.Vms.AppIds[next_app]
 
 		// Get platform ID.
 		platform_id := utils.AppIdToPlatformId(cfg, appId)

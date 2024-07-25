@@ -27,19 +27,21 @@ type VMS struct {
 	ExcludeEmpty bool   `json:"exclude_empty"`
 	SubBots      bool   `json:"sub_bots"`
 	AddOnly      bool   `json:"add_only"`
+	RandomApps   bool   `json:"random_apps"`
 }
 
 type Scanner struct {
-	Protocol     string `json:"protocol"`
-	PlatformIds  []uint `json:"platform_ids"`
-	MinWait      int    `json:"min_wait"`
-	MaxWait      int    `json:"max_wait"`
-	Limit        int    `json:"limit"`
-	RecvOnly     bool   `json:"recv_only"`
-	SubBots      bool   `json:"sub_bots"`
-	QueryTimeout int    `json:"query_timeout"`
-	A2sPlayer    bool   `json:"a2s_player"`
-	Channel      chan bool
+	Protocol        string `json:"protocol"`
+	PlatformIds     []uint `json:"platform_ids"`
+	MinWait         int    `json:"min_wait"`
+	MaxWait         int    `json:"max_wait"`
+	Limit           int    `json:"limit"`
+	RecvOnly        bool   `json:"recv_only"`
+	SubBots         bool   `json:"sub_bots"`
+	QueryTimeout    int    `json:"query_timeout"`
+	A2sPlayer       bool   `json:"a2s_player"`
+	RandomPlatforms bool   `json:"random_platforms"`
+	Channel         chan bool
 }
 
 type PlatformMapper struct {
