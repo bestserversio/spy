@@ -18,7 +18,7 @@ func (cfg *Config) PrintConfig() {
 
 	fmt.Println("\tVerbose => " + strconv.Itoa(cfg.Verbose))
 
-	fmt.Println("\tAPI")
+	fmt.Println("\tBest Servers API")
 	fmt.Println("\t\tHost => " + cfg.Api.Host)
 	fmt.Println("\t\tAuthorization => " + cfg.Api.Authorization)
 	fmt.Println("\t\tTimeout => " + strconv.Itoa(cfg.Api.Timeout))
@@ -29,6 +29,13 @@ func (cfg *Config) PrintConfig() {
 	fmt.Println("\t\tAuthorization => " + cfg.WebApi.Authorization)
 	fmt.Println("\t\tInterval => " + strconv.Itoa(cfg.WebApi.Interval))
 	fmt.Println("\t\tTimeout => " + strconv.Itoa(cfg.WebApi.Timeout))
+	saveToFs := "No"
+
+	if cfg.WebApi.SaveToFs {
+		saveToFs = "Yes"
+	}
+
+	fmt.Println("\t\tSave To FS => " + saveToFs)
 
 	fmt.Println("\tVMS")
 	fmt.Println("\t\tEnabled => " + strconv.FormatBool(cfg.Vms.Enabled))
@@ -37,6 +44,14 @@ func (cfg *Config) PrintConfig() {
 	fmt.Println("\t\tTimeout => " + strconv.Itoa(cfg.Vms.Timeout))
 	fmt.Println("\t\tAPI Token => " + cfg.Vms.ApiToken)
 
+	recv_only := "No"
+
+	if cfg.Vms.RecvOnly {
+		recv_only = "Yes"
+	}
+
+	fmt.Println("\t\tReceive Only => " + recv_only)
+
 	sub_bots := "No"
 
 	if cfg.Vms.SubBots {
@@ -44,6 +59,38 @@ func (cfg *Config) PrintConfig() {
 	}
 
 	fmt.Println("\t\tSub Bots => " + sub_bots)
+
+	exclude_empty := "No"
+
+	if cfg.Vms.ExcludeEmpty {
+		exclude_empty = "Yes"
+	}
+
+	fmt.Println("\t\tExclude Empty => " + exclude_empty)
+
+	add_only := "No"
+
+	if cfg.Vms.AddOnly {
+		add_only = "Yes"
+	}
+
+	fmt.Println("\t\tAdd Only => " + add_only)
+
+	random_apps := "No"
+
+	if cfg.Vms.RandomApps {
+		random_apps = "Yes"
+	}
+
+	fmt.Println("\t\tRandom Apps => " + random_apps)
+
+	set_offline := "No"
+
+	if cfg.Vms.SetOffline {
+		set_offline = "Yes"
+	}
+
+	fmt.Println("\t\tSet Offline => " + set_offline)
 
 	appIdList := make([]string, len(cfg.Vms.AppIds))
 	for i, num := range cfg.Vms.AppIds {
@@ -68,6 +115,23 @@ func (cfg *Config) PrintConfig() {
 			}
 
 			fmt.Println("\t\t\tSub Bots => " + sub_bots)
+			fmt.Println("\t\t\tQuery Timeout => " + strconv.Itoa(s.QueryTimeout))
+
+			a2s_player := "No"
+
+			if s.A2sPlayer {
+				a2s_player = "Yes"
+			}
+
+			fmt.Println("\t\t\tA2S Player => " + a2s_player)
+
+			random_platforms := "No"
+
+			if s.RandomPlatforms {
+				random_platforms = "Yes"
+			}
+
+			fmt.Println("\t\t\tRandom Platforms => " + random_platforms)
 
 			ids := "None"
 
@@ -93,11 +157,50 @@ func (cfg *Config) PrintConfig() {
 		}
 	}
 
+	fmt.Println("\tRemove Inactive")
+
+	enabled := "No"
+
+	if cfg.RemoveInactive.Enabled {
+		enabled = "Yes"
+	}
+
+	fmt.Println("\t\tEnabled => " + enabled)
+	fmt.Println("\t\tInterval => " + strconv.Itoa(cfg.RemoveInactive.Interval))
+	fmt.Println("\t\tInactive Time => " + strconv.Itoa(cfg.RemoveInactive.InactiveTime))
+	fmt.Println("\t\tTimeout => " + strconv.Itoa(cfg.RemoveInactive.Timeout))
+
 	if len(cfg.BadNames) > 0 {
 		fmt.Println("\tBad Names")
 
 		for _, s := range cfg.BadNames {
 			fmt.Println("\t\t- ", s)
+		}
+	}
+
+	if len(cfg.PlatformFilters) > 0 {
+		fmt.Println("\tPlatform Filters")
+
+		for _, f := range cfg.PlatformFilters {
+			fmt.Println("\t\tPlatform " + strconv.Itoa(f.Id))
+
+			if f.MaxCurUsers != nil {
+				fmt.Println("\t\t\tMax Current Users => " + strconv.Itoa(*f.MaxCurUsers))
+			}
+
+			if f.MaxUsers != nil {
+				fmt.Println("\t\t\tMax Users => " + strconv.Itoa(*f.MaxUsers))
+			}
+
+			if f.AllowUserOverflow != nil {
+				allow_user_overflow := "No"
+
+				if *f.AllowUserOverflow {
+					allow_user_overflow = "Yes"
+				}
+
+				fmt.Println("\t\t\tAllow User Overflow => " + allow_user_overflow)
+			}
 		}
 	}
 
@@ -116,5 +219,4 @@ func (cfg *Config) PrintConfig() {
 			fmt.Println("\t\t- ", s)
 		}
 	}
-
 }
