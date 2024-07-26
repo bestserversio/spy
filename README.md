@@ -74,6 +74,8 @@ Please take a look at the following configuration.
 | bad_names | []string | `[]` | An array of strings that represent bad names to be filtered. |
 | bad_ips | []string | `[]` | An array of strings that represent bad IP ranges to be filtered. CIDR ranges are supported (`/24`). Examples include `192.168.3.0/24` and `192.168.3.5`. |
 | bad_asns | []uint | `[]` | An array of unsigned integers that represent bad ASNs to be filtered (e.g. `AS<uint>`). |
+| remove_inactive | Remove Inactive Object | `{}` | Remove inactive servers settings. |
+| platform_filters | Platform Filter Array | `[]` | A list of platform-specific filters to apply. |
 
 <details>
     <summary>Example(s)</summary>
@@ -97,7 +99,22 @@ Using a verbose level of `5`.
     ],
     "platform_maps": [
 
-    ]
+    ],
+    "bad_words": [
+
+    ],
+    "bad_ips": [
+
+    ],
+    "bad_asns": [
+
+    ],
+    "platform_filters": [
+
+    ],
+    "remove_inactive": {
+
+    }
 }
 ```
 
@@ -146,6 +163,7 @@ The web API/polling information to retrieve configuration settings for this Spy 
 | authorization | string | `""` | What to set the `Authorization` request header to. |
 | timeout | int | `5` | The API request timeout. |
 | interval | int | `120` | How often in seconds to polling from the web config (0 = only poll once on Spy startup). |
+| save_to_fs | bool | `true` | Whether to save the web API to the local config file on the file system. |
 
 <details>
     <summary>Example(s)</summary>
@@ -159,7 +177,8 @@ Use web API at `http://myserver.com/api/spy/get` with the authorization `Bearer 
     "endpoint": "/api/server/add",
     "authorization": "Bearer test",
     "timeout": 10,
-    "interval": 1200
+    "interval": 1200,
+    "save_to_fs": true
 }
 ```
 </details>
@@ -180,6 +199,8 @@ The Valve Master Server API information.
 | exclude_empty | bool | `true` | If true, will exclude empty servers from the VMS request directly. |
 | sub_bots | bool | `true` | If true, subtracts the bot count from the user count when calcaluting the current user count. |
 | add_only | bool | `false` | If true, game servers from each VMS request will be added to Best Servers only if it doesn't already exist. |
+| random_apps | bool | `false` | If true, the next app ID is selected randomly instead of in order. |
+| set_offline | bool | `true` | If true, all servers added by VMS will be set to offline by default. |
 
 <details>
     <summary>Example(s)</summary>
@@ -193,7 +214,9 @@ Enable the Valve Master Server for app IDs `240` (Counter-Strike: Source) and `4
     "min_wait": 1000,
     "max_wait": 2000,
     "exclude_empty": true,
-    "add_only": true
+    "add_only": true,
+    "random_apps": false,
+    "set_offline": true
 }
 ```
 </details>
@@ -212,7 +235,7 @@ This is the scanner object. Scanners query existing servers and update their inf
 | sub_bots | bool | `false` | If true, will subtract the bot count from the user count when calculating the user count. |
 | query_timeout | int | `3` | The query timeout in seconds. |
 | a2s_player | bool | `true` | If the protocol is `A2S`, will attempt to send an `A2S_PLAYER` request alongside `A2S_INFO` to determine if the game server is online/not spoofed. |
-
+| random_platforms | bool | `false` | If true, the next platform ID will be selected randomly instead of in order. |
 
 <details>
     <summary>Example(s)</summary>
@@ -233,7 +256,7 @@ We want to create a scanner that queries existing servers with the `A2S` protoco
 ```
 </details>
 
-### Platform Maps Object
+### Platform Map Object
 The platform maps object is used to map app Ids (from something like the VMS) to platform Ids.
 
 | Name | Type | Default | Description |
@@ -255,6 +278,57 @@ We want to map app ID `240` to platform ID `1` (Counter-Strike: Source) and `440
     {
         "app_id": 440,
         "platform_id": 2
+    }
+]
+```
+</details>
+
+### Remove Inactive Object
+The remove inactive object contains settings on automatically removing inactive servers based off of last online.
+
+| Name | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| enabled | bool | `false` | Whether to enable automatically removing servers. |
+| inactive_time | int | `2592000` | How many seconds since last online to consider a server inactive. |
+| interval | int | `86400` | How often to run the remove inactive functionality in seconds. |
+| timeout | int | `5` | The request timeout. |
+
+<details>
+    <summary>Example(s)</summary>
+
+If we want to remove inactive servers that haven't been online in 500 seconds, we'd use the following. We'll execute the remove inactive functionality every 60 seconds (minute).
+
+```json
+{
+    "enabled":  true,
+    "inactive_time": 500,
+    "interval": 60,
+    "timeout": 5
+}
+```
+</details>
+
+### Platform Filter Object
+The platform filters object is used to apply platform-specific filters to servers.
+
+| Name | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| id | int | `0` | The platform ID. |
+| max_cur_users | int | `NULL` | The maximum current users allowed by servers in this platform. |
+| max_users | int | `NULL` | The maximum max users allowed by servers in this platform. |
+| allow_user_overflow | bool | `NULL` | If true, any servers that have more current users than max users will be filtered. |
+
+<details>
+    <summary>Example(s)</summary>
+
+Let's say we want to limit Counter-Strike: Source servers to a maximum of 65 users (both current and max). The CS:S platform ID is `4`.
+
+```json
+[
+    {
+        "id": 4,
+        "max_cur_users": 65,
+        "max_users": 65
     }
 ]
 ```
