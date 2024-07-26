@@ -68,11 +68,5 @@ func RetrievePlatforms(cfg config.Config) ([]Platform, error) {
 	// Assign platforms to response.
 	platforms = retrieveResp.Platforms
 
-	// Verbose.
-	if cfg.Verbose > 1 {
-		fmt.Println("[GET] Found", retrieveResp.Count, "platforms!")
-		fmt.Println("[GET] Response message =>", retrieveResp.Message)
-	}
-
 	return platforms, err
 }

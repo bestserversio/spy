@@ -56,7 +56,7 @@ func AddServers(cfg *config.Config, servers []Server, addOnly bool) (int, error)
 		url = fmt.Sprintf("%s?%s", url, params.Encode())
 	}
 
-	utils.DebugMsg(4, cfg.Verbose, "[SRV_AS] Using API url '%s'.", url)
+	utils.DebugMsg(4, cfg, "[SRV_AS] Using API url '%s'.", url)
 
 	// Create new HTTP client.
 	client := http.Client{
@@ -75,7 +75,7 @@ func AddServers(cfg *config.Config, servers []Server, addOnly bool) (int, error)
 		return cnt, err
 	}
 
-	utils.DebugMsg(6, cfg.Verbose, "[SERVERS] Using request body: %s", string(upBytes))
+	utils.DebugMsg(6, cfg, "[SERVERS] Using request body: %s", string(upBytes))
 
 	// Create new request and check for error.
 	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(upBytes))

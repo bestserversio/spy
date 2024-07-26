@@ -67,7 +67,8 @@ type PlatformFilter struct {
 }
 
 type Config struct {
-	Verbose int `json:"verbose"`
+	Verbose      int     `json:"verbose"`
+	LogDirectory *string `json:"log_directory"`
 
 	Api             BsAPI            `json:"api"`
 	WebApi          WebApi           `json:"web_api"`

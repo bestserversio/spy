@@ -51,7 +51,7 @@ func RetrieveServers(cfg *config.Config, platform_id *uint, limit *int, visibleO
 		url = fmt.Sprintf("%s?%s", url, params.Encode())
 	}
 
-	utils.DebugMsg(4, cfg.Verbose, "[SERVERS] Sending API request to => '%s'.", url)
+	utils.DebugMsg(4, cfg, "[SERVERS] Sending API request to => '%s'.", url)
 
 	// Create a new request and check for error.
 	req, err := http.NewRequest("GET", url, nil)

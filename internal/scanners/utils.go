@@ -18,7 +18,7 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 	// Defaults to A2S
 	query_type := 0
 
-	utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Starting scanner with protocol '%s'!", idx, scanner.Protocol)
+	utils.DebugMsg(1, cfg, "[SCANNER %d] Starting scanner with protocol '%s'!", idx, scanner.Protocol)
 
 	next_platform := 0
 
@@ -64,21 +64,21 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 				visibleOnlyStr = "Yes"
 			}
 
-			utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Using platform ID %d. Visible Only => %s", idx, platform_id, visibleOnlyStr)
+			utils.DebugMsg(4, cfg, "[SCANNER %d] Using platform ID %d. Visible Only => %s", idx, platform_id, visibleOnlyStr)
 
 			// Retrieve servers from API.
 			allServers, err := servers.RetrieveServers(cfg, &platform_id, &scanner.Limit, visibleOnly)
 
 			if err != nil {
-				utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Failed to retrieve servers using platform ID '%d' due to error.", idx, platform_id)
-				utils.DebugMsg(1, cfg.Verbose, err.Error())
+				utils.DebugMsg(1, cfg, "[SCANNER %d] Failed to retrieve servers using platform ID '%d' due to error.", idx, platform_id)
+				utils.DebugMsg(1, cfg, err.Error())
 
 				Respin(scanner)
 
 				continue
 			}
 
-			utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Found %d servers to update from API for platform ID '%d'!", idx, len(allServers), platform_id)
+			utils.DebugMsg(4, cfg, "[SCANNER %d] Found %d servers to update from API for platform ID '%d'!", idx, len(allServers), platform_id)
 
 			// Make sure we have servers.
 			if len(allServers) < 1 {
@@ -98,7 +98,7 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 				go func(srv *servers.Server, i int) {
 					defer func() {
 						if r := recover(); r != nil {
-							utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Found panic when scanning '%s:%d'.", i, *srv.Ip, *srv.Port)
+							utils.DebugMsg(1, cfg, "[SCANNER %d] Found panic when scanning '%s:%d'.", i, *srv.Ip, *srv.Port)
 						}
 					}()
 
@@ -140,7 +140,7 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 					switch query_type {
 					case 0:
 						if srv.Ip == nil || srv.Port == nil {
-							utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Missing IP/port for server. Skipping.", idx)
+							utils.DebugMsg(1, cfg, "[SCANNER %d] Missing IP/port for server. Skipping.", idx)
 
 							return
 						}
@@ -156,7 +156,7 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 						err = QueryA2s(srv, timeout, scanner.A2sPlayer)
 
 						if err != nil {
-							utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Failed to query A2S server '%s:%d' due to error :: %s.", idx, *srv.Ip, *srv.Port, err.Error())
+							utils.DebugMsg(5, cfg, "[SCANNER %d] Failed to query A2S server '%s:%d' due to error :: %s.", idx, *srv.Ip, *srv.Port, err.Error())
 
 							*srv.Online = false
 						}
@@ -166,14 +166,14 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 					filtered, err := srv.FilterServer(cfg)
 
 					if err != nil {
-						utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Failed to filter server '%s:%d' due to error. Setting to invisible.", idx, *srv.Ip, *srv.Port)
-						utils.DebugMsg(1, cfg.Verbose, err.Error())
+						utils.DebugMsg(1, cfg, "[SCANNER %d] Failed to filter server '%s:%d' due to error. Setting to invisible.", idx, *srv.Ip, *srv.Port)
+						utils.DebugMsg(1, cfg, err.Error())
 
 						*srv.Visible = false
 					}
 
 					if filtered {
-						utils.DebugMsg(3, cfg.Verbose, "[SCANNER %d] Found '%s:%d' filtered. Setting to invisible.", idx, *srv.Ip, *srv.Port)
+						utils.DebugMsg(5, cfg, "[SCANNER %d] Found '%s:%d' filtered. Setting to invisible.", idx, *srv.Ip, *srv.Port)
 
 						*srv.Visible = false
 					}
@@ -196,7 +196,7 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 						*srv.LastOnline = isoDate
 					}
 
-					utils.DebugMsg(5, cfg.Verbose, "[SCANNER %d] Updating server '%s:%d' for platform ID '%d'. Players => %d. Max players => %d. Map => %s.", idx, *srv.Ip, *srv.Port, platform_id, *srv.CurUsers, *srv.MaxUsers, *srv.MapName)
+					utils.DebugMsg(5, cfg, "[SCANNER %d] Updating server '%s:%d' for platform ID '%d'. Players => %d. Max players => %d. Map => %s.", idx, *srv.Ip, *srv.Port, platform_id, *srv.CurUsers, *srv.MaxUsers, *srv.MapName)
 				}(srv, i)
 			}
 
@@ -207,10 +207,10 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 				cnt, err := servers.AddServers(cfg, allServers, false)
 
 				if err != nil {
-					utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Failed to update servers for platform ID '%d' due to error.", idx, platform_id)
-					utils.DebugMsg(1, cfg.Verbose, err.Error())
+					utils.DebugMsg(1, cfg, "[SCANNER %d] Failed to update servers for platform ID '%d' due to error.", idx, platform_id)
+					utils.DebugMsg(1, cfg, err.Error())
 				} else {
-					utils.DebugMsg(3, cfg.Verbose, "[SCANNER %d] Updated %d servers in database for platform ID '%d'!", idx, cnt, platform_id)
+					utils.DebugMsg(3, cfg, "[SCANNER %d] Updated %d servers in database for platform ID '%d'!", idx, cnt, platform_id)
 				}
 			}
 

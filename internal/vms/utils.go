@@ -16,13 +16,13 @@ func Respin(cfg *config.Config) {
 }
 
 func DoVms(cfg *config.Config) {
-	utils.DebugMsg(1, cfg.Verbose, "[VMS] Starting....")
+	utils.DebugMsg(1, cfg, "[VMS] Starting....")
 
 	next_app := 0
 
 	for {
 		if !cfg.Vms.Enabled {
-			utils.DebugMsg(5, cfg.Verbose, "[VMS] Found VMS disabled. Aborting DoVms().")
+			utils.DebugMsg(5, cfg, "[VMS] Found VMS disabled. Aborting DoVms().")
 
 			Respin(cfg)
 
@@ -43,21 +43,21 @@ func DoVms(cfg *config.Config) {
 		// Get platform ID.
 		platform_id := utils.AppIdToPlatformId(cfg, appId)
 
-		utils.DebugMsg(4, cfg.Verbose, "[VMS] Using (random) app ID '%d'.", appId)
+		utils.DebugMsg(4, cfg, "[VMS] Using (random) app ID '%d'.", appId)
 
 		// Retrieve servers.
 		allServers, err := RetrieveServers(cfg, appId)
 
 		if err != nil {
-			utils.DebugMsg(1, cfg.Verbose, "[VMS] Failed to retrieve servers for app ID '%d' due to error.", appId)
-			utils.DebugMsg(1, cfg.Verbose, err.Error())
+			utils.DebugMsg(1, cfg, "[VMS] Failed to retrieve servers for app ID '%d' due to error.", appId)
+			utils.DebugMsg(1, cfg, err.Error())
 
 			Respin(cfg)
 
 			continue
 		}
 
-		utils.DebugMsg(3, cfg.Verbose, "[VMS] Retrieved %d servers from app ID '%d'.", len(allServers), appId)
+		utils.DebugMsg(3, cfg, "[VMS] Retrieved %d servers from app ID '%d'.", len(allServers), appId)
 
 		var serversToUpdate []servers.Server
 
@@ -117,7 +117,7 @@ func DoVms(cfg *config.Config) {
 				portNum, err := strconv.Atoi(split[1])
 
 				if err != nil {
-					utils.DebugMsg(1, cfg.Verbose, "")
+					utils.DebugMsg(1, cfg, "")
 
 					Respin(cfg)
 
@@ -143,14 +143,14 @@ func DoVms(cfg *config.Config) {
 			filtered, err := newSrv.FilterServer(cfg)
 
 			if err != nil {
-				utils.DebugMsg(1, cfg.Verbose, "[VMS] Failed to filter server '%s:%d' due to error. Setting to invisible just in case.", *newSrv.Ip, *newSrv.Port)
-				utils.DebugMsg(1, cfg.Verbose, err.Error())
+				utils.DebugMsg(1, cfg, "[VMS] Failed to filter server '%s:%d' due to error. Setting to invisible just in case.", *newSrv.Ip, *newSrv.Port)
+				utils.DebugMsg(1, cfg, err.Error())
 
 				*newSrv.Visible = false
 			}
 
 			if filtered {
-				utils.DebugMsg(3, cfg.Verbose, "[VMS] Setting '%s:%d' to invisible due to being filtered.", *newSrv.Ip, *newSrv.Port)
+				utils.DebugMsg(5, cfg, "[VMS] Setting '%s:%d' to invisible due to being filtered.", *newSrv.Ip, *newSrv.Port)
 
 				*newSrv.Visible = false
 			}
@@ -158,11 +158,11 @@ func DoVms(cfg *config.Config) {
 			// Append to servers to update array.
 			serversToUpdate = append(serversToUpdate, newSrv)
 
-			utils.DebugMsg(5, cfg.Verbose, "[VMS] Found and adding/updating server '%s:%d'. Host Name => '%s'. Players => %d. Max Players => %d. Map Name => '%s'.", *newSrv.Ip, *newSrv.Port, *newSrv.Name, *newSrv.CurUsers, *newSrv.MaxUsers, *newSrv.MapName)
+			utils.DebugMsg(5, cfg, "[VMS] Found and adding/updating server '%s:%d'. Host Name => '%s'. Players => %d. Max Players => %d. Map Name => '%s'.", *newSrv.Ip, *newSrv.Port, *newSrv.Name, *newSrv.CurUsers, *newSrv.MaxUsers, *newSrv.MapName)
 		}
 
 		if len(serversToUpdate) < 1 {
-			utils.DebugMsg(3, cfg.Verbose, "[VMS] Found no servers to update for app ID %d.", appId)
+			utils.DebugMsg(3, cfg, "[VMS] Found no servers to update for app ID %d.", appId)
 
 			Respin(cfg)
 
@@ -174,15 +174,15 @@ func DoVms(cfg *config.Config) {
 			cnt, err := servers.AddServers(cfg, serversToUpdate, cfg.Vms.AddOnly)
 
 			if err != nil {
-				utils.DebugMsg(1, cfg.Verbose, "[VMS] Failed to add/update servers for app ID %d due to error.", appId)
-				utils.DebugMsg(1, cfg.Verbose, err.Error())
+				utils.DebugMsg(1, cfg, "[VMS] Failed to add/update servers for app ID %d due to error.", appId)
+				utils.DebugMsg(1, cfg, err.Error())
 
 				Respin(cfg)
 
 				continue
 			}
 
-			utils.DebugMsg(2, cfg.Verbose, "[VMS] Added/Updated %d servers!", cnt)
+			utils.DebugMsg(2, cfg, "[VMS] Added/Updated %d servers!", cnt)
 		}
 
 		Respin(cfg)

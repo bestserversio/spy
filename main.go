@@ -71,7 +71,7 @@ func main() {
 		fmt.Println(err)
 	}
 
-	utils.DebugMsg(2, cfg.Verbose, "[CFG] Initial config loaded...")
+	utils.DebugMsg(2, &cfg, "[CFG] Initial config loaded...")
 
 	// Check if we want to print our config settings.
 	if list {
@@ -92,28 +92,28 @@ func main() {
 				// Get web API interval.
 				interval := time.Duration(cfg.WebApi.Interval) * time.Second
 
-				utils.DebugMsg(3, cfg.Verbose, "[WEB_API] Retrieving web API from '%s%s'.", cfg.WebApi.Host, cfg.WebApi.Endpoint)
+				utils.DebugMsg(3, &cfg, "[WEB_API] Retrieving web API from '%s%s'.", cfg.WebApi.Host, cfg.WebApi.Endpoint)
 
 				data, err := cfg.LoadFromWeb()
 
 				if err != nil {
-					utils.DebugMsg(1, cfg.Verbose, "[WEB_API] Failed to retrieve web API from '%s%s'.", cfg.WebApi.Host, cfg.WebApi.Endpoint)
+					utils.DebugMsg(1, &cfg, "[WEB_API] Failed to retrieve web API from '%s%s'.", cfg.WebApi.Host, cfg.WebApi.Endpoint)
 
 					time.Sleep(interval)
 
 					continue
 				}
 
-				utils.DebugMsg(6, cfg.Verbose, "[WEB_API] Loading JSON => %s", data)
+				utils.DebugMsg(6, &cfg, "[WEB_API] Loading JSON => %s", data)
 
 				// Check if we need to save new config to the file system.
 				if cfg.WebApi.SaveToFs {
 					err := os.WriteFile(*cfgPath, []byte(data), 0644)
 
 					if err != nil {
-						utils.DebugMsg(0, cfg.Verbose, "[WEB_API] Failed to write web config to file system (%s) due to error :: %s", *cfgPath, err.Error())
+						utils.DebugMsg(0, &cfg, "[WEB_API] Failed to write web config to file system (%s) due to error :: %s", *cfgPath, err.Error())
 					} else {
-						utils.DebugMsg(2, cfg.Verbose, "[WEB_API] Successfully wrote new data to file system (%s)!", *cfgPath)
+						utils.DebugMsg(2, &cfg, "[WEB_API] Successfully wrote new data to file system (%s)!", *cfgPath)
 					}
 				}
 
@@ -149,9 +149,9 @@ func main() {
 			cnt, err := servers.RemoveInactive(&cfg, inactive_time)
 
 			if err != nil {
-				utils.DebugMsg(1, cfg.Verbose, "[INACTIVE] Failed to remove inactive servers due to error :: %s", err.Error())
+				utils.DebugMsg(1, &cfg, "[INACTIVE] Failed to remove inactive servers due to error :: %s", err.Error())
 			} else {
-				utils.DebugMsg(1, cfg.Verbose, "[INACTIVE] Removed %d inactive servers!", cnt)
+				utils.DebugMsg(1, &cfg, "[INACTIVE] Removed %d inactive servers!", cnt)
 			}
 
 			time.Sleep(time.Second * time.Duration(cfg.RemoveInactive.Interval))
@@ -170,6 +170,6 @@ func main() {
 
 	<-sigc
 
-	utils.DebugMsg(0, cfg.Verbose, "[MAIN] Exiting...")
+	utils.DebugMsg(0, &cfg, "[MAIN] Exiting...")
 	os.Exit(0)
 }

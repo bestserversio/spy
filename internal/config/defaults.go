@@ -1,6 +1,12 @@
 package config
 
 func (cfg *Config) LoadDefaults() {
+	if cfg.LogDirectory == nil {
+		cfg.LogDirectory = new(string)
+
+		*cfg.LogDirectory = "./logs"
+	}
+
 	cfg.Api.Host = "http://localhost"
 	cfg.Api.Authorization = ""
 	cfg.Api.Timeout = 5

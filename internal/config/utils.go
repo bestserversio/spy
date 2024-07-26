@@ -18,6 +18,14 @@ func (cfg *Config) PrintConfig() {
 
 	fmt.Println("\tVerbose => " + strconv.Itoa(cfg.Verbose))
 
+	logDir := "NULL"
+
+	if cfg.LogDirectory != nil {
+		logDir = *cfg.LogDirectory
+	}
+
+	fmt.Println("\tLog Directory => " + logDir)
+
 	fmt.Println("\tBest Servers API")
 	fmt.Println("\t\tHost => " + cfg.Api.Host)
 	fmt.Println("\t\tAuthorization => " + cfg.Api.Authorization)
