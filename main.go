@@ -92,6 +92,10 @@ func main() {
 				// Get web API interval.
 				interval := time.Duration(cfg.WebApi.Interval) * time.Second
 
+				if interval < 1 {
+					interval = time.Second * 60
+				}
+
 				utils.DebugMsg(3, &cfg, "[WEB_API] Retrieving web API from '%s%s'.", cfg.WebApi.Host, cfg.WebApi.Endpoint)
 
 				data, err := cfg.LoadFromWeb()
