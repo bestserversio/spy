@@ -48,7 +48,7 @@ func (srv *Server) FilterServer(cfg *config.Config) (bool, error) {
 	}
 
 	// Check user overflow.
-	if p_filters.AllowUserOverflow != nil && srv.CurUsers != nil && srv.MaxUsers != nil && *srv.CurUsers > *srv.MaxUsers {
+	if p_filters.AllowUserOverflow != nil && srv.CurUsers != nil && !*p_filters.AllowUserOverflow && srv.MaxUsers != nil && *srv.CurUsers > *srv.MaxUsers {
 		return true, err
 	}
 
