@@ -106,6 +106,17 @@ func main() {
 
 				utils.DebugMsg(6, cfg.Verbose, "[WEB_API] Loading JSON => %s", data)
 
+				// Check if we need to save new config to the file system.
+				if cfg.WebApi.SaveToFs {
+					err := os.WriteFile(*cfgPath, []byte(data), 0644)
+
+					if err != nil {
+						utils.DebugMsg(0, cfg.Verbose, "[WEB_API] Failed to write web config to file system (%s) due to error :: %s", *cfgPath, err.Error())
+					} else {
+						utils.DebugMsg(2, cfg.Verbose, "[WEB_API] Successfully wrote new data to file system (%s)!", *cfgPath)
+					}
+				}
+
 				// Resetup scanners.
 				scanners.SetupScanners(&cfg)
 

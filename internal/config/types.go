@@ -13,6 +13,7 @@ type WebApi struct {
 	Authorization string `json:"authorization"`
 	Timeout       int    `json:"timeout"`
 	Interval      int    `json:"interval"`
+	SaveToFs      bool   `json:"save_to_fs"`
 }
 
 type VMS struct {
