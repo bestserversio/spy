@@ -129,7 +129,7 @@ Setting a few bad names, IPs, and ASNs.
 ```
 </details>
 
-### Bs API Object
+### BS API Object
 The Best Servers API object includes connection and authorization details to the Best Servers API used for adding/updating servers.
 
 | Name | Type | Default | Description |
