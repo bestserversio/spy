@@ -41,8 +41,7 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 
 			platform_id := scanner.PlatformIds[next_platform]
 
-			utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Using platform ID %d.", idx, platform_id)
-
+			// Check if we should only scan visible servers.
 			visibleOnly := false
 
 			if scanner.VisibleSkipCount > 0 {
@@ -58,6 +57,14 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 					visible_cnt[int(platform_id)] = 1
 				}
 			}
+
+			visibleOnlyStr := "No"
+
+			if visibleOnly {
+				visibleOnlyStr = "Yes"
+			}
+
+			utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Using platform ID %d. Visible Only => %s", idx, platform_id, visibleOnlyStr)
 
 			// Retrieve servers from API.
 			allServers, err := servers.RetrieveServers(cfg, &platform_id, &scanner.Limit, visibleOnly)
