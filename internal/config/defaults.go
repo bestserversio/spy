@@ -17,6 +17,8 @@ func (cfg *Config) LoadDefaults() {
 	cfg.Vms.Limit = 100
 	cfg.Vms.ExcludeEmpty = true
 	cfg.Vms.SubBots = true
+	cfg.Vms.AddOnly = true
+	cfg.Vms.SetOffline = true
 
 	cfg.RemoveInactive.Enabled = false
 	cfg.RemoveInactive.InactiveTime = 2592000

@@ -29,6 +29,7 @@ type VMS struct {
 	SubBots      bool   `json:"sub_bots"`
 	AddOnly      bool   `json:"add_only"`
 	RandomApps   bool   `json:"random_apps"`
+	SetOffline   bool   `json:"set_offline"`
 }
 
 type Scanner struct {

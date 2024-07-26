@@ -79,8 +79,15 @@ func DoVms(cfg *config.Config) {
 				LastQueried: new(string),
 				Region:      new(string),
 			}
+
+			initialOnline := true
+
+			if cfg.Vms.SetOffline {
+				initialOnline = false
+			}
+
 			*newSrv.Visible = true
-			*newSrv.Online = true
+			*newSrv.Online = initialOnline
 			*newSrv.Name = srv.HostName
 			*newSrv.CurUsers = srv.Players
 			*newSrv.MaxUsers = srv.MaxPlayers
