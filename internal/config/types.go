@@ -56,16 +56,24 @@ type RemoveInactive struct {
 	Timeout      int  `json:"timeout"`
 }
 
+type PlatformFilter struct {
+	Id                int   `json:"id"`
+	MaxUsers          *int  `json:"max_users"`
+	MaxCurUsers       *int  `json:"max_cur_users"`
+	AllowUserOverflow *bool `json:"allow_user_overflow"`
+}
+
 type Config struct {
 	Verbose int `json:"verbose"`
 
-	Api            BsAPI            `json:"api"`
-	WebApi         WebApi           `json:"web_api"`
-	Vms            VMS              `json:"vms"`
-	Scanners       []Scanner        `json:"scanners"`
-	PlatformMaps   []PlatformMapper `json:"platform_maps"`
-	BadNames       []string         `json:"bad_names"`
-	BadIps         []string         `json:"bad_ips"`
-	BadAsns        []uint           `json:"bad_asns"`
-	RemoveInactive RemoveInactive   `json:"remove_inactive"`
+	Api             BsAPI            `json:"api"`
+	WebApi          WebApi           `json:"web_api"`
+	Vms             VMS              `json:"vms"`
+	Scanners        []Scanner        `json:"scanners"`
+	PlatformMaps    []PlatformMapper `json:"platform_maps"`
+	BadNames        []string         `json:"bad_names"`
+	BadIps          []string         `json:"bad_ips"`
+	BadAsns         []uint           `json:"bad_asns"`
+	RemoveInactive  RemoveInactive   `json:"remove_inactive"`
+	PlatformFilters []PlatformFilter `json:"platform_filters"`
 }
