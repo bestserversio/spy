@@ -19,7 +19,7 @@ type RetrieveResp struct {
 	Message string   `json:"message"`
 }
 
-func RetrieveServers(cfg *config.Config, platform_id *uint, limit *int) ([]Server, error) {
+func RetrieveServers(cfg *config.Config, platform_id *uint, limit *int, visibleOnly bool) ([]Server, error) {
 	// Initiailize what we're returning.
 	servers := []Server{}
 	var err error
@@ -34,6 +34,10 @@ func RetrieveServers(cfg *config.Config, platform_id *uint, limit *int) ([]Serve
 
 	if platform_id != nil {
 		params.Add("platformId", strconv.Itoa(int(*platform_id)))
+	}
+
+	if visibleOnly {
+		params.Add("visibleOnly", "1")
 	}
 
 	if limit != nil {

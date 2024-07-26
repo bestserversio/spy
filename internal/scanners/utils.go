@@ -22,6 +22,8 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 
 	next_platform := 0
 
+	visible_cnt := make(map[int]int)
+
 	for {
 		select {
 		case <-scanner.Channel:
@@ -41,8 +43,24 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 
 			utils.DebugMsg(4, cfg.Verbose, "[SCANNER %d] Using platform ID %d.", idx, platform_id)
 
+			visibleOnly := false
+
+			if scanner.VisibleSkipCount > 0 {
+				if val, exists := visible_cnt[int(platform_id)]; exists {
+					visible_cnt[int(platform_id)] = val + 1
+				} else {
+					visible_cnt[int(platform_id)] = 1
+				}
+
+				if visible_cnt[int(platform_id)] < scanner.VisibleSkipCount {
+					visibleOnly = true
+				} else {
+					visible_cnt[int(platform_id)] = 1
+				}
+			}
+
 			// Retrieve servers from API.
-			allServers, err := servers.RetrieveServers(cfg, &platform_id, &scanner.Limit)
+			allServers, err := servers.RetrieveServers(cfg, &platform_id, &scanner.Limit, visibleOnly)
 
 			if err != nil {
 				utils.DebugMsg(1, cfg.Verbose, "[SCANNER %d] Failed to retrieve servers using platform ID '%d' due to error.", idx, platform_id)

@@ -133,6 +133,8 @@ func (cfg *Config) PrintConfig() {
 
 			fmt.Println("\t\t\tRandom Platforms => " + random_platforms)
 
+			fmt.Println("\t\t\tVisible Skip Count => " + strconv.Itoa(s.VisibleSkipCount))
+
 			ids := "None"
 
 			if len(s.PlatformIds) > 0 {
