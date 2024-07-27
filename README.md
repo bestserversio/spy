@@ -351,7 +351,7 @@ This object contains settings for removing duplicate servers by IP. There are ma
 | enabled | bool | `false` | Whether to enable remove duplicates checking. |
 | interval | int | `120` | How often to check for duplicates in seconds. |
 | limit | int | `100` | The amount of server IPs to check in one request. |
-| max_servers | int | 100 | The maximum amount of servers allowed on one IP. |
+| max_servers | int | `100` | The maximum amount of servers allowed on one IP. |
 | timeout | int | `30` | The request timeout. |
 
 <details>
