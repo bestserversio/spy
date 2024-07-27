@@ -60,6 +60,10 @@ func (cfg *Config) LoadFromWeb() (string, error) {
 		return "", err
 	}
 
+	if res.StatusCode != 200 {
+		return "", fmt.Errorf("status code did not equal 200 (%d)", res.StatusCode)
+	}
+
 	defer res.Body.Close()
 
 	b, err := io.ReadAll(res.Body)
