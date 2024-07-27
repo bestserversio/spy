@@ -243,4 +243,12 @@ func (cfg *Config) PrintConfig() {
 			fmt.Println("\t\t- ", s)
 		}
 	}
+
+	if len(cfg.GoodIps) > 0 {
+		fmt.Println("\tGood IPs")
+
+		for _, s := range cfg.GoodIps {
+			fmt.Println("\t\t- ", s)
+		}
+	}
 }

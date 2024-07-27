@@ -74,6 +74,7 @@ Please take a look at the following configuration.
 | bad_names | []string | `[]` | An array of strings that represent bad names to be filtered. |
 | bad_ips | []string | `[]` | An array of strings that represent bad IP ranges to be filtered. CIDR ranges are supported (`/24`). Examples include `192.168.3.0/24` and `192.168.3.5`. |
 | bad_asns | []uint | `[]` | An array of unsigned integers that represent bad ASNs to be filtered (e.g. `AS<uint>`). |
+| good_ips | []string | `[]` | A list of IP range(s) to avoid filtering with. |
 | remove_inactive | Remove Inactive Object | `{}` | Remove inactive servers settings. |
 | platform_filters | Platform Filter Array | `[]` | A list of platform-specific filters to apply. |
 | remove_dups | Remove Duplicates Object | `{}` | A list of settings for removing duplicate servers by IP. |
@@ -108,6 +109,9 @@ Using a verbose level of `5`.
 
     ],
     "bad_asns": [
+
+    ],
+    "good_ips": [
 
     ],
     "platform_filters": [

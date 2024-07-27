@@ -86,6 +86,7 @@ type Config struct {
 	BadNames        []string         `json:"bad_names"`
 	BadIps          []string         `json:"bad_ips"`
 	BadAsns         []uint           `json:"bad_asns"`
+	GoodIps         []string         `json:"good_ips"`
 	RemoveInactive  RemoveInactive   `json:"remove_inactive"`
 	PlatformFilters []PlatformFilter `json:"platform_filters"`
 	RemoveDups      RemoveDups       `json:"remove_dups"`

@@ -8,6 +8,17 @@ import (
 func (srv *Server) FilterServer(cfg *config.Config) (bool, error) {
 	var err error
 
+	// Make sure this IP isn't on the good IPs list.
+	if len(cfg.GoodIps) > 0 && srv.Ip != nil {
+		check, err := utils.ContainsIps(*srv.Ip, cfg.GoodIps)
+
+		if err != nil {
+			utils.DebugMsg(1, cfg, "[FILTERS] Failed to check if IP is on good IPs list due to error :: %s", err.Error())
+		} else if !check {
+			return false, err
+		}
+	}
+
 	// Scan for bad names.
 	if len(cfg.BadNames) > 0 && srv.Name != nil {
 		if utils.ContainsStrings(*srv.Name, cfg.BadNames) {
