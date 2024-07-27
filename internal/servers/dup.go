@@ -17,7 +17,7 @@ type DupResp struct {
 	Filtered int `json:"filtered"`
 }
 
-func CheckForDups(cfg *config.Config) {
+func RemoveDups(cfg *config.Config) {
 	for {
 		var err error
 		cnt := 0
