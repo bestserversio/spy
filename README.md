@@ -76,6 +76,7 @@ Please take a look at the following configuration.
 | bad_asns | []uint | `[]` | An array of unsigned integers that represent bad ASNs to be filtered (e.g. `AS<uint>`). |
 | remove_inactive | Remove Inactive Object | `{}` | Remove inactive servers settings. |
 | platform_filters | Platform Filter Array | `[]` | A list of platform-specific filters to apply. |
+| remove_dups | Remove Duplicates Object | `{}` | A list of settings for removing duplicate servers by IP. |
 
 <details>
     <summary>Example(s)</summary>
@@ -113,6 +114,9 @@ Using a verbose level of `5`.
 
     ],
     "remove_inactive": {
+
+    },
+    "remove_dups": {
 
     }
 }
@@ -183,7 +187,7 @@ Use web API at `http://myserver.com/api/spy/get` with the authorization `Bearer 
 ```
 </details>
 
-## VMS Object
+### VMS Object
 The Valve Master Server API information.
 
 | Name | Type | Default | Description |
@@ -332,6 +336,33 @@ Let's say we want to limit Counter-Strike: Source servers to a maximum of 65 use
         "max_users": 65
     }
 ]
+```
+</details>
+
+### Remove Duplicates Object
+This object contains settings for removing duplicate servers by IP. There are many fake game servers that use every port available on a single IP and these settings mitigate this issue.
+
+| Name | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| enabled | bool | `false` | Whether to enable remove duplicates checking. |
+| interval | int | `120` | How often to check for duplicates in seconds. |
+| limit | int | `100` | The amount of server IPs to check in one request. |
+| max_servers | int | 100 | The maximum amount of servers allowed on one IP. |
+| timeout | int | `30` | The request timeout. |
+
+<details>
+    <summary>Example(s)</summary>
+
+If we want to check for duplicate servers every `60` seconds (1 minute) with the max servers per IP being set to `1000` and the server limit per request set to `200`, we'd use the following.
+
+```json
+{
+    "enabled": true,
+    "interval": 60,
+    "limit": 200,
+    "max_servers": 1000,
+    "timeout": 30
+}
 ```
 </details>
 

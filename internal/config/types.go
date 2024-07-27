@@ -66,6 +66,14 @@ type PlatformFilter struct {
 	AllowUserOverflow *bool `json:"allow_user_overflow"`
 }
 
+type RemoveDups struct {
+	Enabled    bool `json:"enabled"`
+	Interval   int  `json:"interval"`
+	Limit      int  `json:"limit"`
+	MaxServers int  `json:"max_servers"`
+	Timeout    int  `json:"timeout"`
+}
+
 type Config struct {
 	Verbose      int     `json:"verbose"`
 	LogDirectory *string `json:"log_directory"`
@@ -80,4 +88,5 @@ type Config struct {
 	BadAsns         []uint           `json:"bad_asns"`
 	RemoveInactive  RemoveInactive   `json:"remove_inactive"`
 	PlatformFilters []PlatformFilter `json:"platform_filters"`
+	RemoveDups      RemoveDups       `json:"remove_dups"`
 }

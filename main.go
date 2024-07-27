@@ -162,6 +162,9 @@ func main() {
 		}
 	}()
 
+	// Create remove duplicates loop.
+	go servers.CheckForDups(&cfg)
+
 	// Create VMS.
 	go vms.DoVms(&cfg)
 

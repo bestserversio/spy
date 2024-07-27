@@ -180,14 +180,6 @@ func (cfg *Config) PrintConfig() {
 	fmt.Println("\t\tInactive Time => " + strconv.Itoa(cfg.RemoveInactive.InactiveTime))
 	fmt.Println("\t\tTimeout => " + strconv.Itoa(cfg.RemoveInactive.Timeout))
 
-	if len(cfg.BadNames) > 0 {
-		fmt.Println("\tBad Names")
-
-		for _, s := range cfg.BadNames {
-			fmt.Println("\t\t- ", s)
-		}
-	}
-
 	if len(cfg.PlatformFilters) > 0 {
 		fmt.Println("\tPlatform Filters")
 
@@ -211,6 +203,28 @@ func (cfg *Config) PrintConfig() {
 
 				fmt.Println("\t\t\tAllow User Overflow => " + allow_user_overflow)
 			}
+		}
+	}
+
+	fmt.Println("\tRemove Duplicates")
+
+	enabled = "No"
+
+	if cfg.RemoveDups.Enabled {
+		enabled = "Yes"
+	}
+
+	fmt.Println("\t\tEnabled => " + enabled)
+	fmt.Println("\t\tInterval => " + strconv.Itoa(cfg.RemoveDups.Interval))
+	fmt.Println("\t\tLimit => " + strconv.Itoa(cfg.RemoveDups.Limit))
+	fmt.Println("\t\tMax Servers => " + strconv.Itoa(cfg.RemoveDups.MaxServers))
+	fmt.Println("\t\tTimeout => " + strconv.Itoa(cfg.RemoveDups.Timeout))
+
+	if len(cfg.BadNames) > 0 {
+		fmt.Println("\tBad Names")
+
+		for _, s := range cfg.BadNames {
+			fmt.Println("\t\t- ", s)
 		}
 	}
 

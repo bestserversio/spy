@@ -30,4 +30,10 @@ func (cfg *Config) LoadDefaults() {
 	cfg.RemoveInactive.InactiveTime = 2592000
 	cfg.RemoveInactive.Interval = 86400
 	cfg.RemoveInactive.Timeout = 5
+
+	cfg.RemoveDups.Enabled = false
+	cfg.RemoveDups.Interval = 120
+	cfg.RemoveDups.Limit = 100
+	cfg.RemoveDups.MaxServers = 100
+	cfg.RemoveDups.Timeout = 5
 }
