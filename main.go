@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -112,12 +113,18 @@ func main() {
 
 				// Check if we need to save new config to the file system.
 				if cfg.WebApi.SaveToFs {
-					err := os.WriteFile(*cfgPath, []byte(data), 0644)
+					jsonData, err := json.MarshalIndent(cfg, "", "    ")
 
 					if err != nil {
-						utils.DebugMsg(0, &cfg, "[WEB_API] Failed to write web config to file system (%s) due to error :: %s", *cfgPath, err.Error())
+						utils.DebugMsg(1, &cfg, "[WEB_API] Failed to marshal CFG structure when saving to file system due to error : %s", err.Error())
 					} else {
-						utils.DebugMsg(2, &cfg, "[WEB_API] Successfully wrote new data to file system (%s)!", *cfgPath)
+						err = os.WriteFile(*cfgPath, jsonData, 0644)
+
+						if err != nil {
+							utils.DebugMsg(0, &cfg, "[WEB_API] Failed to write web config to file system (%s) due to error :: %s", *cfgPath, err.Error())
+						} else {
+							utils.DebugMsg(2, &cfg, "[WEB_API] Successfully wrote new data to file system (%s)!", *cfgPath)
+						}
 					}
 				}
 
