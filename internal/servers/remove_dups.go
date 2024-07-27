@@ -48,13 +48,13 @@ func RemoveDups(cfg *config.Config) {
 		// Format URL.
 		url := fmt.Sprintf("%s%s?%s", cfg.Api.Host, "/api/servers/removedups", params.Encode())
 
-		utils.DebugMsg(4, cfg, "[DUPS] Sending duplicate API request to => '%s'.", url)
+		utils.DebugMsg(4, cfg, "[REM_DUPS] Sending duplicate API request to => '%s'.", url)
 
 		// Create a new request and check for error.
 		req, err := http.NewRequest("POST", url, nil)
 
 		if err != nil {
-			utils.DebugMsg(1, cfg, "[DUPS] Request failed due to error :: %s", err.Error())
+			utils.DebugMsg(1, cfg, "[REM_DUPS] Request failed due to error :: %s", err.Error())
 
 			time.Sleep(interval)
 
@@ -71,7 +71,7 @@ func RemoveDups(cfg *config.Config) {
 		res, err := client.Do(req)
 
 		if err != nil {
-			utils.DebugMsg(1, cfg, "[DUPS] Request failed due to error :: %s", err.Error())
+			utils.DebugMsg(1, cfg, "[REM_DUPS] Request failed due to error :: %s", err.Error())
 
 			time.Sleep(interval)
 
@@ -79,7 +79,7 @@ func RemoveDups(cfg *config.Config) {
 		}
 
 		if res.StatusCode != 200 {
-			utils.DebugMsg(1, cfg, "[DUPS] Request failed due to error :: status code did not return 200 (%d)", res.StatusCode)
+			utils.DebugMsg(1, cfg, "[REM_DUPS] Request failed due to error :: status code did not return 200 (%d)", res.StatusCode)
 
 			time.Sleep(interval)
 
@@ -90,7 +90,7 @@ func RemoveDups(cfg *config.Config) {
 		b, err := io.ReadAll(res.Body)
 
 		if err != nil {
-			utils.DebugMsg(1, cfg, "[DUPS] Failed to read response body :: %s", err.Error())
+			utils.DebugMsg(1, cfg, "[REM_DUPS] Failed to read response body :: %s", err.Error())
 
 			time.Sleep(interval)
 
@@ -107,7 +107,7 @@ func RemoveDups(cfg *config.Config) {
 		err = json.Unmarshal(b, &retrieveResp)
 
 		if err != nil {
-			utils.DebugMsg(1, cfg, "[DUPS] Failed to unmarshal JSON due to error :: %s", err.Error())
+			utils.DebugMsg(1, cfg, "[REM_DUPS] Failed to unmarshal JSON due to error :: %s", err.Error())
 
 			time.Sleep(interval)
 
@@ -117,7 +117,7 @@ func RemoveDups(cfg *config.Config) {
 		// Assign servers to response.
 		cnt = retrieveResp.Filtered
 
-		utils.DebugMsg(4, cfg, "[DUPS] Filtered %d servers.", cnt)
+		utils.DebugMsg(4, cfg, "[REM_DUPS] Filtered %d servers.", cnt)
 
 		time.Sleep(interval)
 	}

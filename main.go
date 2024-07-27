@@ -85,16 +85,18 @@ func main() {
 	if cfg.WebApi.Enabled {
 		go func() {
 			for {
-				// Make sure web config is still enabled.
-				if !cfg.WebApi.Enabled {
-					return
-				}
-
 				// Get web API interval.
 				interval := time.Duration(cfg.WebApi.Interval) * time.Second
 
 				if interval < 1 {
 					interval = time.Second * 60
+				}
+
+				// Make sure web config is still enabled.
+				if !cfg.WebApi.Enabled {
+					time.Sleep(interval)
+
+					continue
 				}
 
 				utils.DebugMsg(3, &cfg, "[WEB_API] Retrieving web API from '%s%s'.", cfg.WebApi.Host, cfg.WebApi.Endpoint)
