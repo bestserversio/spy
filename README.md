@@ -66,6 +66,7 @@ Please take a look at the following configuration.
 | Name | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
 | verbose | int | `0` | The verbose level. Values 1 - 6 are supported. |
+| log_directory | string | `NULL` | The path to the directory to store logs in. Use `NULL` to disable logging to files. |
 | api | BsApi Object | `{}` | The Best Servers API object (read below). |
 | web_api | Web API Object | `{}` | The web API object (read below). |
 | vms | Valve Master Server Object | `{}` | The Valve Master Server object (read below). |
