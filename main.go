@@ -52,7 +52,7 @@ func main() {
 	}
 
 	// Check for help menu.
-	if version {
+	if help {
 		fmt.Print(HELPMENU)
 
 		os.Exit(0)
