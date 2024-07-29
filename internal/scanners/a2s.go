@@ -90,7 +90,7 @@ func QueryA2s(server *servers.Server, timeout int, a2sPlayer bool) error {
 		*server.Os = "linux"
 
 	case "Mac":
-		*server.Os = "Mac"
+		*server.Os = "mac"
 	}
 
 	// Check if dedicated.
@@ -116,12 +116,14 @@ func QueryA2s(server *servers.Server, timeout int, a2sPlayer bool) error {
 	}
 
 	// Lastly, do A2S_PLAYER check.
-	ply, err := cl.QueryPlayer()
+	if a2sPlayer {
+		ply, err := cl.QueryPlayer()
 
-	// Make sure count matches online player count.
-	if a2sPlayer && (err != nil || ply.Count != info.Players) {
-		// Set to offline since it's invalid.
-		return fmt.Errorf("a2s_player failed")
+		// Make sure count matches online player count.
+		if err != nil || ply.Count != info.Players {
+			// Set to offline since it's invalid.
+			return fmt.Errorf("a2s_player failed")
+		}
 	}
 
 	*server.Online = true

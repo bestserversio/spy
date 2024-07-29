@@ -27,6 +27,8 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 	for {
 		select {
 		case <-scanner.Channel:
+			utils.DebugMsg(1, cfg, "[SCANNER %d] Found close request. Closing scanner.", idx)
+
 			return
 		default:
 			if scanner.RandomPlatforms {
@@ -87,6 +89,9 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 				continue
 			}
 
+			onlineCnt := 0
+			offlineCnt := 0
+
 			var wg sync.WaitGroup
 
 			// Loop through each server and update.
@@ -98,7 +103,7 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 				go func(srv *servers.Server, i int) {
 					defer func() {
 						if r := recover(); r != nil {
-							utils.DebugMsg(1, cfg, "[SCANNER %d] Found panic when scanning '%s:%d'.", i, *srv.Ip, *srv.Port)
+							utils.DebugMsg(1, cfg, "[SCANNER %d] Found panic when scanning '%s:%d'.", idx, *srv.Ip, *srv.Port)
 						}
 					}()
 
@@ -194,10 +199,19 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 						isoDate := now.Format("2006-01-02T15:04:05Z")
 
 						*srv.LastOnline = isoDate
+
+						onlineCnt++
+					} else {
+						offlineCnt++
 					}
 
 					utils.DebugMsg(5, cfg, "[SCANNER %d] Updating server '%s:%d' for platform ID '%d'. Players => %d. Max players => %d. Map => %s.", idx, *srv.Ip, *srv.Port, platform_id, *srv.CurUsers, *srv.MaxUsers, *srv.MapName)
 				}(srv, i)
+
+				// Check for request delay.
+				if scanner.RequestDelay > 0 {
+					time.Sleep(time.Millisecond * time.Duration(scanner.RequestDelay))
+				}
 			}
 
 			wg.Wait()
@@ -210,13 +224,14 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 					utils.DebugMsg(1, cfg, "[SCANNER %d] Failed to update servers for platform ID '%d' due to error.", idx, platform_id)
 					utils.DebugMsg(1, cfg, err.Error())
 				} else {
-					utils.DebugMsg(3, cfg, "[SCANNER %d] Updated %d servers in database for platform ID '%d'!", idx, cnt, platform_id)
+					utils.DebugMsg(3, cfg, "[SCANNER %d] Updated %d servers in database for platform ID '%d'! Online => %d. Offline => %d", idx, cnt, platform_id, onlineCnt, offlineCnt)
 				}
 			}
-
-			Respin(scanner)
 		}
 
+		Respin(scanner)
+
+		continue
 	}
 }
 
@@ -226,7 +241,7 @@ func SetupScanners(cfg *config.Config) {
 
 		// Check if channel if valid here and if so, cancel existing go routine.
 		if s.Channel != nil {
-			close(s.Channel)
+			s.Channel <- true
 		}
 
 		s.Channel = make(chan bool)

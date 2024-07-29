@@ -116,6 +116,8 @@ func (cfg *Config) PrintConfig() {
 			fmt.Println("\t\t\tProtocol => " + s.Protocol)
 			fmt.Println("\t\t\tMin Wait => " + strconv.Itoa(s.MinWait))
 			fmt.Println("\t\t\tMax Wait => " + strconv.Itoa(s.MaxWait))
+			fmt.Println("\t\t\tRequest Delay (MS) => " + strconv.Itoa(s.RequestDelay))
+
 			sub_bots := "No"
 
 			if s.SubBots {

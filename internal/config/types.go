@@ -44,6 +44,7 @@ type Scanner struct {
 	A2sPlayer        bool      `json:"a2s_player"`
 	RandomPlatforms  bool      `json:"random_platforms"`
 	VisibleSkipCount int       `json:"visible_skip_count"`
+	RequestDelay     int       `json:"request_delay"`
 	Channel          chan bool `json:"-"`
 }
 

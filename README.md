@@ -246,6 +246,7 @@ This is the scanner object. Scanners query existing servers and update their inf
 | a2s_player | bool | `true` | If the protocol is `A2S`, will attempt to send an `A2S_PLAYER` request alongside `A2S_INFO` to determine if the game server is online/not spoofed. |
 | random_platforms | bool | `false` | If true, the next platform ID will be selected randomly instead of in order. |
 | visible_skip_count | int | `0` | If over 0, will only scan visible servers up to this value. When met, the counter is reset and the query scans for all servers including invisible. |
+| request_delay | int | `0` | The delay in milliseconds between every server request. |
 
 <details>
     <summary>Example(s)</summary>
