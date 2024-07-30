@@ -28,6 +28,8 @@ func QueryA2s(server *servers.Server, timeout int, a2sPlayer bool) error {
 		return err
 	}
 
+	defer cl.Close()
+
 	// Query server information.
 	info, err := cl.QueryInfo()
 
