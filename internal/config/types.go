@@ -75,6 +75,14 @@ type RemoveDups struct {
 	Timeout    int  `json:"timeout"`
 }
 
+type RemoveTimedOut struct {
+	Enabled      bool  `json:"enabled"`
+	PlatformIds  []int `json:"platform_ids"`
+	TimedOutTime int   `json:"timed_out_time"`
+	Interval     int   `json:"interval"`
+	Timeout      int   `json:"timeout"`
+}
+
 type Config struct {
 	Verbose      int     `json:"verbose"`
 	LogDirectory *string `json:"log_directory"`
@@ -91,4 +99,5 @@ type Config struct {
 	RemoveInactive  RemoveInactive   `json:"remove_inactive"`
 	PlatformFilters []PlatformFilter `json:"platform_filters"`
 	RemoveDups      RemoveDups       `json:"remove_dups"`
+	RemoveTimedOut  RemoveTimedOut   `json:"remove_timed_out"`
 }

@@ -146,8 +146,11 @@ func main() {
 	// Setup remove inactive.
 	go servers.RemoveInactive(&cfg)
 
-	// Create remove duplicates loop.
+	// Setup remove dups.
 	go servers.RemoveDups(&cfg)
+
+	// Setup remove timed out.
+	go servers.RemoveTimedOut(&cfg)
 
 	// Create VMS.
 	go vms.DoVms(&cfg)

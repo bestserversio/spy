@@ -43,7 +43,7 @@ func DoVms(cfg *config.Config) {
 		// Get platform ID.
 		platform_id := utils.AppIdToPlatformId(cfg, appId)
 
-		utils.DebugMsg(4, cfg, "[VMS] Using (random) app ID '%d'.", appId)
+		utils.DebugMsg(4, cfg, "[VMS] Using app ID '%d'.", appId)
 
 		// Retrieve servers.
 		allServers, err := RetrieveServers(cfg, appId)
