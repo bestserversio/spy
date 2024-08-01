@@ -79,6 +79,7 @@ Please take a look at the following configuration.
 | remove_inactive | Remove Inactive Object | `{}` | Remove inactive servers settings. |
 | platform_filters | Platform Filter Array | `[]` | A list of platform-specific filters to apply. |
 | remove_dups | Remove Duplicates Object | `{}` | A list of settings for removing duplicate servers by IP. |
+| remove_timed_out | Remove Timed Out Object | `{}` | A list of settings for removing timed out servers. |
 
 <details>
     <summary>Example(s)</summary>
@@ -122,6 +123,9 @@ Using a verbose level of `5`.
 
     },
     "remove_dups": {
+
+    },
+    "remove_timed_out": {
 
     }
 }
@@ -367,6 +371,33 @@ If we want to check for duplicate servers every `60` seconds (1 minute) with the
     "interval": 60,
     "limit": 200,
     "max_servers": 1000,
+    "timeout": 30
+}
+```
+</details>
+
+### Remove Timed Out Object
+This object contains settings for removing (setting offline) timed out servers based off of the platform's server timeout.
+
+| Name | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| enabled | bool | `false` | Whether to enable remove timed out servers checking. |
+| interval | int | `120` | How often to check for timed out servers in seconds. |
+| platform_ids | []int | `[]` | A list of platform IDs to perform the server timed out check for. If left empty, all platforms are checked. |
+| timed_out_time | int | `3600` | The server's timeout time. |
+| timeout | int | `30` | The request timeout. |
+
+<details>
+    <summary>Example(s)</summary>
+
+If we want to check for timed out servers for Counter-Strike: Source (ID `4`) every `120` seconds with a server timeout of `3600` seconds (an hour), we'd use the following.
+
+```json
+{
+    "enabled": true,
+    "interval": 120,
+    "platform_ids": [4],
+    "timed_out_time": 3600,
     "timeout": 30
 }
 ```

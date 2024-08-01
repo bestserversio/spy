@@ -222,6 +222,34 @@ func (cfg *Config) PrintConfig() {
 	fmt.Println("\t\tMax Servers => " + strconv.Itoa(cfg.RemoveDups.MaxServers))
 	fmt.Println("\t\tTimeout => " + strconv.Itoa(cfg.RemoveDups.Timeout))
 
+	fmt.Println("\tRemove Timed Out")
+
+	enabled = "No"
+
+	if cfg.RemoveTimedOut.Enabled {
+		enabled = "Yes"
+	}
+
+	fmt.Println("\t\tEnabled => " + enabled)
+	fmt.Println("\t\tInterval => " + strconv.Itoa(cfg.RemoveTimedOut.Interval))
+
+	platform_ids := "None"
+
+	if len(cfg.RemoveTimedOut.PlatformIds) > 0 {
+		str_ids := make([]string, len(cfg.RemoveTimedOut.PlatformIds))
+
+		for i, id := range cfg.RemoveTimedOut.PlatformIds {
+			str_ids[i] = strconv.Itoa(id)
+		}
+
+		platform_ids = strings.Join(str_ids, ", ")
+	}
+
+	fmt.Println("Platform IDs => " + platform_ids)
+
+	fmt.Println("Timed Out Time => " + strconv.Itoa(cfg.RemoveTimedOut.TimedOutTime))
+	fmt.Println("Timeout => " + strconv.Itoa(cfg.RemoveTimedOut.Timeout))
+
 	if len(cfg.BadNames) > 0 {
 		fmt.Println("\tBad Names")
 
