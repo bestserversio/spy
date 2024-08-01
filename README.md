@@ -69,7 +69,7 @@ Please take a look at the following configuration.
 | log_directory | string | `./logs` | The path to the directory to store logs in. Use `NULL` to disable logging to files. |
 | api | BsApi Object | `{}` | The Best Servers API object (read below). |
 | web_api | Web API Object | `{}` | The web API object (read below). |
-| vms | Valve Master Server Object | `{}` | The Valve Master Server object (read below). |
+| vms | Valve Master Server Array | `[]` | An array of scanners for the Valve Master Server (read below). |
 | scanners | Scanner Array | `[]` | An array of Scanner objects (read below). |
 | platform_maps | Platform Maps Array | `[]` | An array of platform map objects (read below). |
 | bad_names | []string | `[]` | An array of strings that represent bad names to be filtered. |
@@ -95,9 +95,9 @@ Using a verbose level of `5`.
     "web_api": {
 
     },
-    "vms": {
+    "vms": [
 
-    },
+    ],
     "scanners": [
 
     ],
@@ -201,7 +201,6 @@ The Valve Master Server API information.
 
 | Name | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
-| enabled | bool | `false` | Whether to enable VMS. |
 | timeout | int | `5` | The request timeout. |
 | api_token | string | `""` | The token/key to use when retrieving game servers from this API. |
 | app_ids | []uint | `[]` | A list of Steam app IDs to retrieve for. Make sure the `platform_maps` array object contains a mapping from the app IDs to the platform IDs! |
@@ -221,16 +220,17 @@ The Valve Master Server API information.
 Enable the Valve Master Server for app IDs `240` (Counter-Strike: Source) and `440` (Team Fortress 2). We want to request the VMS every `1000` - `2000` seconds to avoid rate-limiting. We also want to only add new servers to Best Servers and exclude empty servers from the VMS request.
 
 ```json
-{
-    "enabled": true,
-    "api_token": "MY_STEAM_API_TOKEN",
-    "min_wait": 1000,
-    "max_wait": 2000,
-    "exclude_empty": true,
-    "add_only": true,
-    "random_apps": false,
-    "set_offline": true
-}
+[
+    {
+        "api_token": "MY_STEAM_API_TOKEN",
+        "min_wait": 1000,
+        "max_wait": 2000,
+        "exclude_empty": true,
+        "add_only": true,
+        "random_apps": false,
+        "set_offline": true
+    }
+]
 ```
 </details>
 

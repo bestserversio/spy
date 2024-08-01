@@ -45,67 +45,75 @@ func (cfg *Config) PrintConfig() {
 
 	fmt.Println("\t\tSave To FS => " + saveToFs)
 
-	fmt.Println("\tVMS")
-	fmt.Println("\t\tEnabled => " + strconv.FormatBool(cfg.Vms.Enabled))
-	fmt.Println("\t\tMin Wait => " + strconv.Itoa(cfg.Vms.MinWait))
-	fmt.Println("\t\tMax Wait => " + strconv.Itoa(cfg.Vms.MaxWait))
-	fmt.Println("\t\tTimeout => " + strconv.Itoa(cfg.Vms.Timeout))
-	fmt.Println("\t\tAPI Token => " + cfg.Vms.ApiToken)
+	if len(cfg.Vms) > 0 {
+		fmt.Println("\tVMS")
 
-	recv_only := "No"
+		for i, vms := range cfg.Vms {
+			fmt.Println("\t\tVMS #" + strconv.Itoa(i+1))
 
-	if cfg.Vms.RecvOnly {
-		recv_only = "Yes"
+			fmt.Println("\t\t\tEnabled => " + strconv.FormatBool(vms.Enabled))
+			fmt.Println("\t\t\tMin Wait => " + strconv.Itoa(vms.MinWait))
+			fmt.Println("\t\t\tMax Wait => " + strconv.Itoa(vms.MaxWait))
+			fmt.Println("\t\t\tTimeout => " + strconv.Itoa(vms.Timeout))
+			fmt.Println("\t\t\tAPI Token => " + vms.ApiToken)
+
+			recv_only := "No"
+
+			if vms.RecvOnly {
+				recv_only = "Yes"
+			}
+
+			fmt.Println("\t\t\tReceive Only => " + recv_only)
+
+			sub_bots := "No"
+
+			if vms.SubBots {
+				sub_bots = "Yes"
+			}
+
+			fmt.Println("\t\t\tSub Bots => " + sub_bots)
+
+			exclude_empty := "No"
+
+			if vms.ExcludeEmpty {
+				exclude_empty = "Yes"
+			}
+
+			fmt.Println("\t\t\tExclude Empty => " + exclude_empty)
+
+			add_only := "No"
+
+			if vms.AddOnly {
+				add_only = "Yes"
+			}
+
+			fmt.Println("\t\t\tAdd Only => " + add_only)
+
+			random_apps := "No"
+
+			if vms.RandomApps {
+				random_apps = "Yes"
+			}
+
+			fmt.Println("\t\t\tRandom Apps => " + random_apps)
+
+			set_offline := "No"
+
+			if vms.SetOffline {
+				set_offline = "Yes"
+			}
+
+			fmt.Println("\t\t\tSet Offline => " + set_offline)
+
+			appIdList := make([]string, len(vms.AppIds))
+
+			for i, num := range vms.AppIds {
+				appIdList[i] = strconv.Itoa(num)
+			}
+
+			fmt.Println("\t\t\tApp IDs => " + strings.Join(appIdList, ", "))
+		}
 	}
-
-	fmt.Println("\t\tReceive Only => " + recv_only)
-
-	sub_bots := "No"
-
-	if cfg.Vms.SubBots {
-		sub_bots = "Yes"
-	}
-
-	fmt.Println("\t\tSub Bots => " + sub_bots)
-
-	exclude_empty := "No"
-
-	if cfg.Vms.ExcludeEmpty {
-		exclude_empty = "Yes"
-	}
-
-	fmt.Println("\t\tExclude Empty => " + exclude_empty)
-
-	add_only := "No"
-
-	if cfg.Vms.AddOnly {
-		add_only = "Yes"
-	}
-
-	fmt.Println("\t\tAdd Only => " + add_only)
-
-	random_apps := "No"
-
-	if cfg.Vms.RandomApps {
-		random_apps = "Yes"
-	}
-
-	fmt.Println("\t\tRandom Apps => " + random_apps)
-
-	set_offline := "No"
-
-	if cfg.Vms.SetOffline {
-		set_offline = "Yes"
-	}
-
-	fmt.Println("\t\tSet Offline => " + set_offline)
-
-	appIdList := make([]string, len(cfg.Vms.AppIds))
-	for i, num := range cfg.Vms.AppIds {
-		appIdList[i] = strconv.Itoa(num)
-	}
-
-	fmt.Println("\t\tApp IDs => " + strings.Join(appIdList, ", "))
 
 	if len(cfg.Scanners) > 0 {
 		fmt.Println("\tScanners")

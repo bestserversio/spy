@@ -130,6 +130,9 @@ func main() {
 					}
 				}
 
+				// Resetup VMS.
+				vms.SetupVms(&cfg)
+
 				// Resetup scanners.
 				scanners.SetupScanners(&cfg)
 
@@ -152,8 +155,8 @@ func main() {
 	// Setup remove timed out.
 	go servers.RemoveTimedOut(&cfg)
 
-	// Create VMS.
-	go vms.DoVms(&cfg)
+	// Setup VMS.
+	vms.SetupVms(&cfg)
 
 	// Setup scanners.
 	scanners.SetupScanners(&cfg)

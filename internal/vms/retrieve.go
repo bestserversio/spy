@@ -12,29 +12,25 @@ import (
 
 const STEAM_API_URL = "https://api.steampowered.com/IGameServersService/GetServerList/v1/"
 
-func RetrieveServers(cfg *config.Config, appId int) ([]Server, error) {
+func RetrieveServers(vms *config.VMS, appId int) ([]Server, error) {
 	var servers []Server
 	var err error = nil
 
-	if !cfg.Vms.Enabled {
-		return servers, err
-	}
-
 	// Create HTTP client with timeout.
 	client := http.Client{
-		Timeout: time.Duration(cfg.Vms.Timeout) * time.Second,
+		Timeout: time.Duration(vms.Timeout) * time.Second,
 	}
 
 	// Start building filters string.
 	filters := fmt.Sprintf("\\appid\\%d", appId)
 
 	// Add empty if exclude empty is set.
-	if cfg.Vms.ExcludeEmpty {
+	if vms.ExcludeEmpty {
 		filters = fmt.Sprintf("%s\\empty\\1", filters)
 	}
 
 	// Compile URL.
-	url := fmt.Sprintf("%s?key=%s&filter=%s&limit=%d", STEAM_API_URL, cfg.Vms.ApiToken, filters, cfg.Vms.Limit)
+	url := fmt.Sprintf("%s?key=%s&filter=%s&limit=%d", STEAM_API_URL, vms.ApiToken, filters, vms.Limit)
 
 	// Create response and check.
 	req, err := http.NewRequest("GET", url, nil)

@@ -17,19 +17,20 @@ type WebApi struct {
 }
 
 type VMS struct {
-	Enabled      bool   `json:"enabled"`
-	Timeout      int    `json:"timeout"`
-	ApiToken     string `json:"api_token"`
-	AppIds       []int  `json:"app_ids"`
-	RecvOnly     bool   `json:"recv_only"`
-	MinWait      int    `json:"min_wait"`
-	MaxWait      int    `json:"max_wait"`
-	Limit        int    `json:"limit"`
-	ExcludeEmpty bool   `json:"exclude_empty"`
-	SubBots      bool   `json:"sub_bots"`
-	AddOnly      bool   `json:"add_only"`
-	RandomApps   bool   `json:"random_apps"`
-	SetOffline   bool   `json:"set_offline"`
+	Enabled      bool      `json:"enabled"`
+	Timeout      int       `json:"timeout"`
+	ApiToken     string    `json:"api_token"`
+	AppIds       []int     `json:"app_ids"`
+	RecvOnly     bool      `json:"recv_only"`
+	MinWait      int       `json:"min_wait"`
+	MaxWait      int       `json:"max_wait"`
+	Limit        int       `json:"limit"`
+	ExcludeEmpty bool      `json:"exclude_empty"`
+	SubBots      bool      `json:"sub_bots"`
+	AddOnly      bool      `json:"add_only"`
+	RandomApps   bool      `json:"random_apps"`
+	SetOffline   bool      `json:"set_offline"`
+	Channel      chan bool `json:"-"`
 }
 
 type Scanner struct {
@@ -89,7 +90,7 @@ type Config struct {
 
 	Api             BsAPI            `json:"api"`
 	WebApi          WebApi           `json:"web_api"`
-	Vms             VMS              `json:"vms"`
+	Vms             []VMS            `json:"vms"`
 	Scanners        []Scanner        `json:"scanners"`
 	PlatformMaps    []PlatformMapper `json:"platform_maps"`
 	BadNames        []string         `json:"bad_names"`
