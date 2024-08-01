@@ -26,6 +26,7 @@ type VMS struct {
 	MaxWait      int       `json:"max_wait"`
 	Limit        int       `json:"limit"`
 	ExcludeEmpty bool      `json:"exclude_empty"`
+	OnlyEmpty    bool      `json:"only_empty"`
 	SubBots      bool      `json:"sub_bots"`
 	AddOnly      bool      `json:"add_only"`
 	RandomApps   bool      `json:"random_apps"`

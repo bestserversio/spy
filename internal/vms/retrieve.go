@@ -29,6 +29,11 @@ func RetrieveServers(vms *config.VMS, appId int) ([]Server, error) {
 		filters = fmt.Sprintf("%s\\empty\\1", filters)
 	}
 
+	// Add no players if only empty is set.
+	if vms.OnlyEmpty {
+		filters = fmt.Sprint("%s\\noplayers\\1", filters)
+	}
+
 	// Compile URL.
 	url := fmt.Sprintf("%s?key=%s&filter=%s&limit=%d", STEAM_API_URL, vms.ApiToken, filters, vms.Limit)
 

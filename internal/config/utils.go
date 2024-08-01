@@ -81,6 +81,14 @@ func (cfg *Config) PrintConfig() {
 
 			fmt.Println("\t\t\tExclude Empty => " + exclude_empty)
 
+			only_empty := "No"
+
+			if vms.OnlyEmpty {
+				only_empty = "Yes"
+			}
+
+			fmt.Println("\t\t\tOnly Empty => " + only_empty)
+
 			add_only := "No"
 
 			if vms.AddOnly {
