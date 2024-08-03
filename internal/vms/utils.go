@@ -153,6 +153,16 @@ func DoVms(cfg *config.Config, vms *config.VMS, idx int) {
 					*newSrv.Visible = false
 				}
 
+				// Set last online time if online.
+				if *newSrv.Online {
+					newSrv.LastOnline = new(string)
+
+					now := time.Now().UTC()
+					isoDate := now.Format("2006-01-02T15:04:05Z")
+
+					*newSrv.LastOnline = isoDate
+				}
+
 				// Append to servers to update array.
 				serversToUpdate = append(serversToUpdate, newSrv)
 
