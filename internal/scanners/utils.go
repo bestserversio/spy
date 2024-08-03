@@ -230,8 +230,6 @@ func DoScanner(cfg *config.Config, scanner *config.Scanner, idx int) {
 		}
 
 		Respin(scanner)
-
-		continue
 	}
 }
 

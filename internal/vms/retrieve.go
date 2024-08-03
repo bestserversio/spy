@@ -31,7 +31,7 @@ func RetrieveServers(vms *config.VMS, appId int) ([]Server, error) {
 
 	// Add no players if only empty is set.
 	if vms.OnlyEmpty {
-		filters = fmt.Sprint("%s\\noplayers\\1", filters)
+		filters = fmt.Sprintf("%s\\noplayers\\1", filters)
 	}
 
 	// Compile URL.

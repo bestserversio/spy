@@ -17,7 +17,6 @@ type WebApi struct {
 }
 
 type VMS struct {
-	Enabled      bool      `json:"enabled"`
 	Timeout      int       `json:"timeout"`
 	ApiToken     string    `json:"api_token"`
 	AppIds       []int     `json:"app_ids"`

@@ -209,6 +209,7 @@ The Valve Master Server API information.
 | max_wait | int | `180` | The maximum amount of time in seconds to wait between each VMS request. |
 | limit | int | `100` | The limit of game servers to retrieve per VMS request. |
 | exclude_empty | bool | `true` | If true, will exclude empty servers from the VMS request directly. |
+| only_empty | bool | `false` | If true, only empty servers will be returned by the VMS request. |
 | sub_bots | bool | `true` | If true, subtracts the bot count from the user count when calcaluting the current user count. |
 | add_only | bool | `false` | If true, game servers from each VMS request will be added to Best Servers only if it doesn't already exist. |
 | random_apps | bool | `false` | If true, the next app ID is selected randomly instead of in order. |
@@ -217,7 +218,7 @@ The Valve Master Server API information.
 <details>
     <summary>Example(s)</summary>
 
-Enable the Valve Master Server for app IDs `240` (Counter-Strike: Source) and `440` (Team Fortress 2). We want to request the VMS every `1000` - `2000` seconds to avoid rate-limiting. We also want to only add new servers to Best Servers and exclude empty servers from the VMS request.
+Add a scanner for the Valve Master Server for app IDs `240` (Counter-Strike: Source) and `440` (Team Fortress 2). We want to request the VMS every `1000` - `2000` seconds to avoid rate-limiting. We also want to only add new servers to Best Servers and exclude empty servers from the VMS request.
 
 ```json
 [

@@ -27,14 +27,6 @@ func DoVms(cfg *config.Config, vms *config.VMS, idx int) {
 
 			return
 		default:
-			if !vms.Enabled {
-				utils.DebugMsg(5, cfg, "[VMS] Found VMS disabled. Aborting DoVms().")
-
-				Respin(vms)
-
-				continue
-			}
-
 			if vms.RandomApps {
 				// Retrieve random app ID.
 				rand.Seed(time.Now().UnixNano())

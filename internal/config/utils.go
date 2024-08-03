@@ -51,7 +51,6 @@ func (cfg *Config) PrintConfig() {
 		for i, vms := range cfg.Vms {
 			fmt.Println("\t\tVMS #" + strconv.Itoa(i+1))
 
-			fmt.Println("\t\t\tEnabled => " + strconv.FormatBool(vms.Enabled))
 			fmt.Println("\t\t\tMin Wait => " + strconv.Itoa(vms.MinWait))
 			fmt.Println("\t\t\tMax Wait => " + strconv.Itoa(vms.MaxWait))
 			fmt.Println("\t\t\tTimeout => " + strconv.Itoa(vms.Timeout))
