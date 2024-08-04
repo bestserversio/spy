@@ -1,0 +1,12 @@
+{
+    "verbose": 3,
+    "web_api": {
+        "enabled": true,
+        "host": "http://my_web_host",
+        "endpoint": "/api/spy/get",
+        "authorization": "my_api_token",
+        "timeout": 10,
+        "interval": 3600,
+        "save_to_fs": true
+    }
+}

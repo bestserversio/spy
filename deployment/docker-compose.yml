@@ -1,0 +1,20 @@
+version: "3.0"
+
+services:
+  app:
+    build: .
+    command: "spy"
+    volumes:
+      - ./logs:/app/logs
+      - ./conf/spy.json:/etc/bestservers/spy.json
+    networks:
+      spy-network:
+        ipv4_address: 172.30.0.3
+networks:
+  spy-network:
+    name: "spy-network"
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.30.0.0/16"
+          gateway: "172.30.0.1"
