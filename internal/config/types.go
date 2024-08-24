@@ -30,6 +30,8 @@ type VMS struct {
 	AddOnly      bool      `json:"add_only"`
 	RandomApps   bool      `json:"random_apps"`
 	SetOffline   bool      `json:"set_offline"`
+	UpdateLimit  int       `json:"update_limit"`
+	RandomizeRes bool      `json:"randomize_res"`
 	Channel      chan bool `json:"-"`
 }
 

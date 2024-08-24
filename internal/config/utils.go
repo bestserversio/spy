@@ -55,6 +55,8 @@ func (cfg *Config) PrintConfig() {
 			fmt.Println("\t\t\tMax Wait => " + strconv.Itoa(vms.MaxWait))
 			fmt.Println("\t\t\tTimeout => " + strconv.Itoa(vms.Timeout))
 			fmt.Println("\t\t\tAPI Token => " + vms.ApiToken)
+			fmt.Println("\t\t\tLimit => " + strconv.Itoa(vms.Limit))
+			fmt.Println("\t\t\tUpdate Limit => " + strconv.Itoa(vms.UpdateLimit))
 
 			recv_only := "No"
 
@@ -111,6 +113,14 @@ func (cfg *Config) PrintConfig() {
 			}
 
 			fmt.Println("\t\t\tSet Offline => " + set_offline)
+
+			randomize_res := "No"
+
+			if vms.RandomizeRes {
+				randomize_res = "Yes"
+			}
+
+			fmt.Println("\t\t\tRandomize Result => " + randomize_res)
 
 			appIdList := make([]string, len(vms.AppIds))
 

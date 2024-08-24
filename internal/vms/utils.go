@@ -57,10 +57,29 @@ func DoVms(cfg *config.Config, vms *config.VMS, idx int) {
 
 			utils.DebugMsg(3, cfg, "[VMS %d] Retrieved %d servers from app ID '%d'.", idx, len(allServers), appId)
 
+			// Check if we should randomize VMS result.
+			if vms.RandomizeRes {
+				rand.Seed(time.Now().UnixNano())
+
+				rand.Shuffle(len(allServers), func(i, j int) {
+					allServers[i], allServers[j] = allServers[j], allServers[i]
+				})
+			}
+
 			var serversToUpdate []servers.Server
 
 			// Loop through all servers from VMS result.
+			cnt := 0
+
 			for _, srv := range allServers {
+				// Check if we've hit the update limit.
+				if vms.UpdateLimit > 0 && vms.UpdateLimit > cnt {
+					break
+				}
+
+				// Increase count.
+				cnt++
+
 				// Create new servers object from servers package and assign basic values.
 				newSrv := servers.Server{
 					Visible:     new(bool),

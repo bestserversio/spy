@@ -214,6 +214,8 @@ The Valve Master Server API information.
 | add_only | bool | `false` | If true, game servers from each VMS request will be added to Best Servers only if it doesn't already exist. |
 | random_apps | bool | `false` | If true, the next app ID is selected randomly instead of in order. |
 | set_offline | bool | `true` | If true, all servers added by VMS will be set to offline by default. |
+| update_limit | int | `0` | If above 0, will limit the amount of servers to update to this amount. |
+| randomize_res | bool | `false` | If true, the results from the VMS request will be randomized. |
 
 <details>
     <summary>Example(s)</summary>
