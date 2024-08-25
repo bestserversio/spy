@@ -73,7 +73,7 @@ func DoVms(cfg *config.Config, vms *config.VMS, idx int) {
 
 			for _, srv := range allServers {
 				// Check if we've hit the update limit.
-				if vms.UpdateLimit > 0 && vms.UpdateLimit > cnt {
+				if vms.UpdateLimit > 0 && cnt > vms.UpdateLimit {
 					break
 				}
 
